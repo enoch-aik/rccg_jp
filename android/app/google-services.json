@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "433509203489",
+    "project_id": "rccg-jp",
+    "storage_bucket": "rccg-jp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433509203489:android:5b7815866f2068dd272d60",
+        "android_client_info": {
+          "package_name": "com.partner.rccg_jp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrZl0MvRc4ZHmyb_BJQj1UI1YQ7ya-Kdk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
