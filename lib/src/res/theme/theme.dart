@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rccg_jp/src/res/color_scheme/color_scheme.dart';
 
-class ToronetTheme {
-  const ToronetTheme._();
+class AppTheme {
+  const AppTheme._();
 
   // Made for FlexColorScheme version 7.0.5. Make sure you
 // use same or higher package version, but still same major version.
@@ -13,9 +13,11 @@ class ToronetTheme {
   static final ThemeData light = FlexThemeData.light(
     colorScheme: AppColorScheme.lightScheme,
     colors: const FlexSchemeColor(
-      primary: Color(0xff00296b),
+      // primary: Color(0xff00296b),
+      primary: Color(0xff180C62),
       primaryContainer: Color(0xffa0c2ed),
-      secondary: Color(0xffd26900),
+      // secondary: Color(0xffd26900),
+      secondary: Color(0xff62180C),
       secondaryContainer: Color(0xffffd270),
       tertiary: Color(0xff5c5c95),
       tertiaryContainer: Color(0xffc8dbf8),

@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:rccg_jp/features/auth/presentation/ui/screens/login.dart';
+import 'package:rccg_jp/features/onboarding/presentation/ui/screens/onboarding.dart';
 
 part 'router.gr.dart';
 @AutoRouterConfig()
@@ -9,7 +10,8 @@ class AppRouter extends _$AppRouter {
   List<AutoRoute> get routes => [
         //RedirectRoute(path: '', redirectTo: '/'),
         //AutoRoute(page: Login.page,initial:true),
-        AutoRoute(path: '/', page: Login.page, initial: true),
+        AutoRoute(path: '/', page: Onboarding.page, initial: true),
+        AutoRoute(page: Login.page),
 
       ];
 

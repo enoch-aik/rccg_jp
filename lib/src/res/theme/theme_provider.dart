@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rccg_jp/core/services/storage/storage.dart';
 
-class ToronetThemeMode extends Notifier<ThemeMode> {
+class AppThemeMode extends Notifier<ThemeMode> {
   @override
   ThemeMode build() {
     return Storage().fetchThemeMode();
