@@ -7,11 +7,13 @@ class AppColorScheme {
 
   static const ColorScheme lightScheme = ColorScheme(
     brightness: Brightness.light,
-    primary: Color(0xff00296b),
+    //primary: Color(0xff00296b),
+    primary: Color(0xff180C62),
     onPrimary: Color(0xffffffff),
     primaryContainer: Color(0xffa0c2ed),
     onPrimaryContainer: Color(0xff0e1014),
-    secondary: Color(0xff5c5c95),
+    //secondary: Color(0xff5c5c95)
+    secondary: Color(0xff62180C),
     onSecondary: Color(0xffffffff),
     secondaryContainer: Color(0xffc8dbf8),
     onSecondaryContainer: Color(0xff111214),
