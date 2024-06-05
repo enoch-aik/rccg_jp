@@ -1,12 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rccg_jp/app_providers.dart';
 import 'package:rccg_jp/core/observers/navigation.dart';
+import 'package:rccg_jp/core/services/storage/store.dart';
+import 'package:rccg_jp/src/res/theme/theme.dart';
 import 'package:rccg_jp/src/router/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Store.init();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -23,23 +31,29 @@ class MyApp extends ConsumerWidget {
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: MaterialApp.router(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-          fontFamily: 'EudoxusSans',
-        ),
-        routeInformationParser: router.defaultRouteParser(),
-        routeInformationProvider: router.routeInfoProvider(),
-        routerDelegate: AutoRouterDelegate(
-          router,
-          navigatorObservers: () => [
-            AppRouteObservers(),
-          ],
-        ),
-        backButtonDispatcher: RootBackButtonDispatcher(),
-        //home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      child: ScreenUtilInit(
+          designSize: const Size(375, 812),
+          minTextAdapt: true,
+          splitScreenMode: false,
+          useInheritedMediaQuery: true,
+        builder: (context,child) {
+          return MaterialApp.router(
+            title: 'Flutter Demo',
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            themeMode: ref.watch(themeModeProvider),
+            routeInformationParser: router.defaultRouteParser(),
+            routeInformationProvider: router.routeInfoProvider(),
+            routerDelegate: AutoRouterDelegate(
+              router,
+              navigatorObservers: () => [
+                AppRouteObservers(),
+              ],
+            ),
+            backButtonDispatcher: RootBackButtonDispatcher(),
+            //home: const MyHomePage(title: 'Flutter Demo Home Page'),
+          );
+        }
       ),
     );
   }
