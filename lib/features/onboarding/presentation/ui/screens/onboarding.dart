@@ -1,9 +1,11 @@
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rccg_jp/features/onboarding/presentation/ui/custom_clipper/curve_clipper.dart';
+import 'package:rccg_jp/features/onboarding/providers.dart';
 import 'package:rccg_jp/lib.dart';
 import 'package:rccg_jp/src/extensions/extensions.dart';
 import 'package:rccg_jp/src/res/assets/svg/svg.dart';
+import 'package:rccg_jp/src/widgets/loader/loader.dart';
 import 'package:rccg_jp/src/widgets/margin.dart';
 import 'package:rccg_jp/src/widgets/text.dart';
 
@@ -28,8 +30,8 @@ class OnboardingScreen extends ConsumerWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Color(0xff180c62).withOpacity(0.7),
-                      Color(0xff180c62),
+                      const Color(0xff180c62).withOpacity(0.7),
+                      const Color(0xff180c62),
                     ],
                   ),
                 ),
@@ -57,21 +59,32 @@ class OnboardingScreen extends ConsumerWidget {
                 ),
               ),
             ),
-            ColSpacing(40),
+            const ColSpacing(40),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: [
                   SizedBox(
                       width: double.maxFinite,
                       child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            Loader.show(context);
+                            final result = await ref
+                                .read(onboardingRepoProvider)
+                                .signInWithGoogle();
+
+                            if (context.mounted) {
+                              Loader.hide(context);
+                            }
+                            result.when(
+                                success: (data) {}, apiFailure: (e, _) {});
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               SvgPicture.asset(googleLogo),
-                              RowSpacing(8),
+                              const RowSpacing(8),
                               KText('Sign in with Google', fontSize: 15.sp),
                             ],
                           )))

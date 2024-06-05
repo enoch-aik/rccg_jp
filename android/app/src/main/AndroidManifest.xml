@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="rccg_jp"
+        android:label="RCCG Jesus Partner"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

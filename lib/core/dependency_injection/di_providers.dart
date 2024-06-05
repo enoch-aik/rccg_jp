@@ -7,3 +7,5 @@ final storeProvider = Provider(
     return Storage();
   },
 );
+
+//firebase auth providers
