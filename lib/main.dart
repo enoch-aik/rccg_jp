@@ -48,25 +48,23 @@ class MyApp extends ConsumerWidget {
           minTextAdapt: true,
           splitScreenMode: false,
           useInheritedMediaQuery: true,
-        builder: (context,child) {
-          return MaterialApp.router(
-            title: 'Flutter Demo',
-            theme: AppTheme.light,
-            darkTheme: AppTheme.dark,
-            themeMode: ref.watch(themeModeProvider),
-            routeInformationParser: router.defaultRouteParser(),
-            routeInformationProvider: router.routeInfoProvider(),
-            routerDelegate: AutoRouterDelegate(
-              router,
-              navigatorObservers: () => [
-                AppRouteObservers(),
-              ],
-            ),
-            backButtonDispatcher: RootBackButtonDispatcher(),
-            //home: const MyHomePage(title: 'Flutter Demo Home Page'),
-          );
-        }
-      ),
+          builder: (context, child) {
+            return MaterialApp.router(
+              title: 'Flutter Demo',
+              theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+              themeMode: ref.watch(themeModeProvider),
+              routeInformationParser: router.defaultRouteParser(),
+              routeInformationProvider: router.routeInfoProvider(),
+              debugShowCheckedModeBanner: false,
+              routerDelegate: AutoRouterDelegate(
+                router,
+                navigatorObservers: () => [AppRouteObservers()],
+              ),
+              backButtonDispatcher: RootBackButtonDispatcher(),
+              //home: const MyHomePage(title: 'Flutter Demo Home Page'),
+            );
+          }),
     );
   }
 }

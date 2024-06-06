@@ -77,7 +77,10 @@ class OnboardingScreen extends ConsumerWidget {
                               Loader.hide(context);
                             }
                             result.when(
-                                success: (data) {}, apiFailure: (e, _) {});
+                                success: (data) {
+                                  AppNavigator.of(context).replace(Home());
+
+                                }, apiFailure: (e, _) {});
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

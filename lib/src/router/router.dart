@@ -1,6 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:rccg_jp/features/auth/presentation/ui/screens/login.dart';
+import 'package:rccg_jp/features/dashboard/presentation/ui/screens/dashboard.dart';
+import 'package:rccg_jp/features/donations/presentation/ui/screens/donation.dart';
+import 'package:rccg_jp/features/home/presentation/ui/screens/home.dart';
 import 'package:rccg_jp/features/onboarding/presentation/ui/screens/onboarding.dart';
 
 part 'router.gr.dart';
@@ -12,6 +15,9 @@ class AppRouter extends _$AppRouter {
         //AutoRoute(page: Login.page,initial:true),
         AutoRoute(path: '/', page: Onboarding.page, initial: true),
         AutoRoute(page: Login.page),
+        AutoRoute(page: Home.page),
+        AutoRoute(page: Dashboard.page),
+        AutoRoute(page: Donation.page),
 
       ];
 

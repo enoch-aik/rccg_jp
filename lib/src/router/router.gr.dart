@@ -15,6 +15,24 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    Dashboard.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DashboardScreen(),
+      );
+    },
+    Donation.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DonationScreen(),
+      );
+    },
+    Home.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const HomeScreen(),
+      );
+    },
     Login.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -28,6 +46,48 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [DashboardScreen]
+class Dashboard extends PageRouteInfo<void> {
+  const Dashboard({List<PageRouteInfo>? children})
+      : super(
+          Dashboard.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'Dashboard';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DonationScreen]
+class Donation extends PageRouteInfo<void> {
+  const Donation({List<PageRouteInfo>? children})
+      : super(
+          Donation.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'Donation';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [HomeScreen]
+class Home extends PageRouteInfo<void> {
+  const Home({List<PageRouteInfo>? children})
+      : super(
+          Home.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'Home';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

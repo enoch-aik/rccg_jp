@@ -106,5 +106,8 @@ flutter:
         - asset: assets/fonts/EudoxusSans-Medium.ttf
         - asset: assets/fonts/EudoxusSans-Bold.ttf
         - asset: assets/fonts/EudoxusSans-ExtraBold.ttf
+    - family: BottomNavIcons
+      fonts:
+        - asset: assets/fonts/BottomNavIcons.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
