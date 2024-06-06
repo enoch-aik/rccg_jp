@@ -21,7 +21,7 @@ class HomeScreen extends HookConsumerWidget {
             ref.read(selectedHomeIndex.notifier).state = index;
           },
         ),
-        body: Column());
+        body: homeScreens[selectedIndex]);
   }
 }
 

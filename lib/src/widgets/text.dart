@@ -39,6 +39,7 @@ class KText extends StatelessWidget {
         fontWeight: fontWeight /*?? FontWeight.w300*/,
         color: color,
         height: lineHeight,
+        fontFamily: 'EudoxusSans'
       ),
     );
   }
