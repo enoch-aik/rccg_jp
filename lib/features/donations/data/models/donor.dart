@@ -13,12 +13,13 @@ class Donor {
       required this.pledgedAt,
       required this.updatedAt,
       required this.lastDonationAt,
-      required this.donations});
+      required this.donations,required this.currencyShortName});
 
   final String name;
   final String email;
   final String phoneNumber;
   final double amount;
+  final String currencyShortName;
   final InstallmentMonth installmentMonth;
   final DateTime pledgedAt;
   final DateTime updatedAt;
@@ -26,12 +27,7 @@ class Donor {
   final List<Donation> donations;
 }
 
-enum InstallmentMonth {
-  one,
-  two,
-  five,
-  ten,
-}
+enum InstallmentMonth { one, two, five, ten }
 
 extension InstallmentMonthExtension on InstallmentMonth {
   String get getName {
