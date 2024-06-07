@@ -33,6 +33,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const DonationScreen(),
       );
     },
+    DonorDetails.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DonorDetailsScreen(),
+      );
+    },
     Home.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -92,6 +98,20 @@ class Donation extends PageRouteInfo<void> {
         );
 
   static const String name = 'Donation';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DonorDetailsScreen]
+class DonorDetails extends PageRouteInfo<void> {
+  const DonorDetails({List<PageRouteInfo>? children})
+      : super(
+          DonorDetails.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DonorDetails';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

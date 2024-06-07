@@ -4,10 +4,12 @@ import 'package:rccg_jp/features/auth/presentation/ui/screens/login.dart';
 import 'package:rccg_jp/features/dashboard/presentation/ui/screens/dashboard.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/screens/add_donation.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/screens/donation.dart';
+import 'package:rccg_jp/features/donations/presentation/ui/screens/donor_details.dart';
 import 'package:rccg_jp/features/home/presentation/ui/screens/home.dart';
 import 'package:rccg_jp/features/onboarding/presentation/ui/screens/onboarding.dart';
 
 part 'router.gr.dart';
+
 @AutoRouterConfig()
 class AppRouter extends _$AppRouter {
   @override
@@ -20,12 +22,17 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: Dashboard.page),
         AutoRoute(page: Donation.page),
         AutoRoute(page: AddDonor.page),
-
+        AutoRoute(page: DonorDetails.page),
       ];
 
   Route<T> modalSheetBuilder<T>(
-      BuildContext context, Widget child, AutoRoutePage<T> page,) {
+    BuildContext context,
+    Widget child,
+    AutoRoutePage<T> page,
+  ) {
     return ModalBottomSheetRoute(
-        builder: (context) => child, isScrollControlled: false,);
+      builder: (context) => child,
+      isScrollControlled: false,
+    );
   }
 }
