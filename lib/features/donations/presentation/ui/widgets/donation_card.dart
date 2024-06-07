@@ -4,15 +4,14 @@ import 'package:rccg_jp/lib.dart';
 import 'package:rccg_jp/src/extensions/extensions.dart';
 import 'package:rccg_jp/src/res/assets/svg/svg.dart';
 import 'package:rccg_jp/src/widgets/init_icon.dart';
-import 'package:rccg_jp/src/widgets/margin.dart';
-import 'package:rccg_jp/src/widgets/text.dart';
 
 import 'status_card.dart';
 
 class DonationCard extends HookConsumerWidget {
   final bool? expandedView;
+  final void Function()? onTap;
 
-  const DonationCard({super.key, this.expandedView = false});
+  const DonationCard({super.key, this.expandedView = false,required this.onTap});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -118,7 +117,7 @@ class DonationCard extends HookConsumerWidget {
                 ),
               )
             : ListTile(
-                onTap: () {},
+                onTap: onTap,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.r)),
                 contentPadding: EdgeInsets.symmetric(horizontal: 6),
