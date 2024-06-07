@@ -28,7 +28,7 @@ class CustomFormField extends StatelessWidget {
         ),
         ColSpacing(8.h),
         textField,
-        ColSpacing(bottomPadding ?? 16.h),
+        ColSpacing(bottomPadding ?? 10),
       ],
     );
   }

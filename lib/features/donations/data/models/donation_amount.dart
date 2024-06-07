@@ -7,11 +7,12 @@ class Donation {
   final String donationId;
   final double amount;
   final DateTime donatedAt;
+  final String currencyShortName;
 
   Donation(
       {required this.amount,
       required this.donatedAt,
-      required this.donationId});
+      required this.donationId,required this.currencyShortName});
 
   factory Donation.fromJson(Map<String, dynamic> json) =>
       _$DonationFromJson(json);

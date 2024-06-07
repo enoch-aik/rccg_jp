@@ -19,6 +19,8 @@ class AddDonorScreen extends HookConsumerWidget {
     final TextEditingController phoneNumber = useTextEditingController();
     final TextEditingController pledgedAmount = useTextEditingController();
     final ValueNotifier<InstallmentMonth?> installmentMonth = useState(null);
+    final ValueNotifier<String> currency = useState('SEK');
+    final List<String> supportedCurrencies = ['SEK', 'EUR', 'USD'];
 
     return Scaffold(
       appBar: AppBar(
@@ -71,20 +73,54 @@ class AddDonorScreen extends HookConsumerWidget {
               ),
             ),
             CustomFormField(
+              label: 'Currency',
+              textField: DropdownButtonFormField(
+                value: currency.value,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(left: 10),
+                ),
+                items: (supportedCurrencies
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Row(
+                          children: [
+                            Text(switch (e) {
+                              'SEK' => 'Swedish Krona (SEK)',
+                              'EUR' => 'Euro (EUR)',
+                              'USD' => 'US Dollar (USD)',
+                              String() => '',
+                            }),
+                          ],
+                        ),
+                      ),
+                    )
+                    .toList()),
+                onChanged: (value) {
+                  if (value != null) {
+                    currency.value = value;
+                  }
+                },
+              ),
+            ),
+            CustomFormField(
               label: 'Pledged amount',
               textField: DefaultTextFormField(
                 controller: pledgedAmount,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
-                  CurrencyTextInputFormatter(symbol: 'SEK ', decimalDigits: 0)
+                  CurrencyTextInputFormatter(symbol: '', decimalDigits: 0)
                 ],
               ),
             ),
             CustomFormField(
-              label: 'How many installments?',
+              label: 'How many month installments?',
               textField: DropdownButtonFormField(
                 value: installmentMonth.value,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(left: 10),
+                ),
                 items: (InstallmentMonth.values
                     .map((e) =>
                         DropdownMenuItem(value: e, child: Text(e.getName)))
@@ -94,7 +130,7 @@ class AddDonorScreen extends HookConsumerWidget {
                 },
               ),
             ),
-            ColSpacing(16.h),
+            ColSpacing(24),
             SizedBox(
               width: double.maxFinite,
               child: FilledButton(
@@ -103,6 +139,7 @@ class AddDonorScreen extends HookConsumerWidget {
                         name: fullName.text,
                         email: email.text,
                         phoneNumber: phoneNumber.text,
+                        currencyShortName: currency.value,
                         amount: double.parse(
                             pledgedAmount.text.removeCommaAndDot.split(' ')[1]),
                         installmentMonth: installmentMonth.value!,

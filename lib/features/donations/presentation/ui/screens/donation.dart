@@ -2,7 +2,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/widgets/donation_card.dart';
 import 'package:rccg_jp/lib.dart';
 import 'package:rccg_jp/src/res/assets/svg/svg.dart';
-import 'package:rccg_jp/src/widgets/margin.dart';
 
 @RoutePage(name: 'donation')
 class DonationScreen extends HookConsumerWidget {
@@ -24,12 +23,18 @@ class DonationScreen extends HookConsumerWidget {
           itemBuilder: (context, index) {
             return DonationCard(
               key: ValueKey(index),
+             // expandedView: true,
+              onTap: () {
+                AppNavigator.of(context).push(
+                  const DonorDetails(),
+                );
+              },
             );
           },
           separatorBuilder: (context, index) {
             return ColSpacing(16.h);
           },
-          itemCount: 5,
+          itemCount: 6,
         ),
       ),
     );
