@@ -10,4 +10,7 @@ abstract class DonationRepo {
   Future<ApiResult<bool>> addDonor(Donor donor);
 
   Future<ApiResult<bool>> addDonation({required NewDonation donation,required Donor updatedDonorInfo});
+
+ApiResult<Stream<List<NewDonation>>> getAllDonations();
+
 }

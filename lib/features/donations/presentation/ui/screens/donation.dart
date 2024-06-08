@@ -11,7 +11,7 @@ class DonationScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final donations = ref.watch(allDonationsStreamProvider);
+    final donors = ref.watch(allDonorsStreamProvider);
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -22,7 +22,7 @@ class DonationScreen extends HookConsumerWidget {
         child: SvgPicture.asset(addDonationOutlined),
       ),
       body: SafeArea(
-          child: donations.when(data: (data) {
+          child: donors.when(data: (data) {
         if (data.isEmpty) {
           return const Center(child: Text('No donor has been added yet'));
         }

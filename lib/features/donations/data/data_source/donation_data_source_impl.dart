@@ -58,4 +58,10 @@ class DonationDataSourceImpl extends DonationDataSource {
           'Unexpected error occurred\nUnable to update donation, try again}');
     });
   }
+
+  @override
+  Stream<List<NewDonation>> getAllDonations() {
+    return _firestore.collection('donations').snapshots().map((event) =>
+        event.docs.map((e) => NewDonation.fromJson(e.data())).toList());
+  }
 }

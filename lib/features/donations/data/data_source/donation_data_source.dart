@@ -8,5 +8,8 @@ abstract class DonationDataSource {
   //add a new donor
   Future<bool> addDonor(Donor donor);
 
-  Future<bool> addDonation({required NewDonation donation, required Donor updatedDonorInfo});
+  Future<bool> addDonation(
+      {required NewDonation donation, required Donor updatedDonorInfo});
+
+  Stream<List<NewDonation>> getAllDonations();
 }
