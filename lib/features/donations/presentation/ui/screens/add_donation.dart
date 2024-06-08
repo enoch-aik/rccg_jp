@@ -22,7 +22,7 @@ class AddDonorScreen extends HookConsumerWidget {
     final TextEditingController email = useTextEditingController();
     final TextEditingController phoneNumber = useTextEditingController();
     final TextEditingController pledgedAmount = useTextEditingController();
-    final ValueNotifier<InstallmentMonth?> installmentMonth = useState(null);
+    final ValueNotifier<int?> installmentMonth = useState(null);
     final ValueNotifier<String> currency = useState('SEK');
     final List<String> supportedCurrencies = ['SEK', 'EUR', 'USD'];
     final validateMode = useState<AutovalidateMode>(AutovalidateMode.disabled);
@@ -113,7 +113,7 @@ class AddDonorScreen extends HookConsumerWidget {
                 textField: DropdownButtonFormField(
                   value: currency.value,
                   decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.only(left: 10),
+                    contentPadding: EdgeInsets.only(left: 10,right: 8),
                   ),
                   validator: (value) {
                     if (value == null) {
@@ -167,11 +167,12 @@ class AddDonorScreen extends HookConsumerWidget {
                 textField: DropdownButtonFormField(
                   value: installmentMonth.value,
                   decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.only(left: 10),
+                    contentPadding: EdgeInsets.only(left: 10,right: 8),
                   ),
-                  items: (InstallmentMonth.values
-                      .map((e) =>
-                          DropdownMenuItem(value: e, child: Text(e.getName)))
+                  items: (List.generate(10, (index) => index + 1)
+                      .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(e > 1 ? '$e  months' : '$e  month')))
                       .toList() as List<DropdownMenuItem>),
                   onChanged: (value) {
                     installmentMonth.value = value;
@@ -197,7 +198,7 @@ class AddDonorScreen extends HookConsumerWidget {
                             phoneNumber:
                                 '+${phoneNumberCountry.value!.dialCode}${phoneNumber.text}',
                             currencyShortName: currency.value,
-                            amount: double.parse(
+                            pledgedAmount: double.parse(
                                 pledgedAmount.text.removeCommaAndDot),
                             installmentMonth: installmentMonth.value!,
                             pledgedAt: DateTime.now(),

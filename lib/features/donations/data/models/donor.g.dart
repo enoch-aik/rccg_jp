@@ -11,14 +11,13 @@ Donor _$DonorFromJson(Map<String, dynamic> json) => Donor(
       name: json['name'] as String,
       email: json['email'] as String,
       phoneNumber: json['phoneNumber'] as String,
-      amount: (json['amount'] as num).toDouble(),
-      installmentMonth:
-          $enumDecode(_$InstallmentMonthEnumMap, json['installmentMonth']),
+      pledgedAmount: (json['pledgedAmount'] as num).toDouble(),
+      installmentMonth: (json['installmentMonth'] as num).toInt(),
       pledgedAt: DateTime.parse(json['pledgedAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       lastDonationAt: DateTime.parse(json['lastDonationAt'] as String),
       donations: (json['donations'] as List<dynamic>)
-          .map((e) => Donation.fromJson(e as Map<String, dynamic>))
+          .map((e) => NewDonation.fromJson(e as Map<String, dynamic>))
           .toList(),
       currencyShortName: json['currencyShortName'] as String,
     );
@@ -28,18 +27,11 @@ Map<String, dynamic> _$DonorToJson(Donor instance) => <String, dynamic>{
       'name': instance.name,
       'email': instance.email,
       'phoneNumber': instance.phoneNumber,
-      'amount': instance.amount,
+      'pledgedAmount': instance.pledgedAmount,
       'currencyShortName': instance.currencyShortName,
-      'installmentMonth': _$InstallmentMonthEnumMap[instance.installmentMonth]!,
+      'installmentMonth': instance.installmentMonth,
       'pledgedAt': instance.pledgedAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
       'lastDonationAt': instance.lastDonationAt.toIso8601String(),
       'donations': instance.donations.map((e) => e.toJson()).toList(),
     };
-
-const _$InstallmentMonthEnumMap = {
-  InstallmentMonth.one: 'one',
-  InstallmentMonth.two: 'two',
-  InstallmentMonth.five: 'five',
-  InstallmentMonth.ten: 'ten',
-};

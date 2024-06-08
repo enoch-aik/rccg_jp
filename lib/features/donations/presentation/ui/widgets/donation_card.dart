@@ -1,5 +1,6 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:rccg_jp/core/helpers/random_color_generator.dart';
+import 'package:rccg_jp/features/donations/data/models/donor.dart';
 import 'package:rccg_jp/lib.dart';
 import 'package:rccg_jp/src/extensions/extensions.dart';
 import 'package:rccg_jp/src/res/assets/svg/svg.dart';
@@ -9,9 +10,14 @@ import 'status_card.dart';
 
 class DonationCard extends HookConsumerWidget {
   final bool? expandedView;
+  final Donor donor;
   final void Function()? onTap;
 
-  const DonationCard({super.key, this.expandedView = false,required this.onTap});
+  const DonationCard(
+      {super.key,
+      this.expandedView = false,
+      required this.onTap,
+      required this.donor});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,12 +34,12 @@ class DonationCard extends HookConsumerWidget {
                     Row(
                       children: [
                         Initicon(
-                          text: 'Enoch Aik',
+                          text: donor.name,
                           backgroundColor: context.onPrimaryContainer,
                         ),
                         const RowSpacing(12),
-                        const KText(
-                          'Enoch Aik',
+                        KText(
+                          donor.name,
                         ),
                         const Spacer(),
                         CircularProgressIndicator(
@@ -55,7 +61,7 @@ class DonationCard extends HookConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         KText(
-                          '4,000Kr/10,000Kr',
+                          '4,000Kr/${donor.pledgedAmount.toFiatCurrencyFormat(decimalDigits: 0)}',
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w600,
                         ),
@@ -74,7 +80,9 @@ class DonationCard extends HookConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             KText(
-                              '10 months',
+                              donor.installmentMonth > 1
+                                  ? '${donor.installmentMonth} months'
+                                  : '${donor.installmentMonth} month',
                               fontSize: 14.sp, fontWeight: FontWeight.bold,
                               //  color: context.outline,
                             ),
@@ -120,7 +128,7 @@ class DonationCard extends HookConsumerWidget {
                 onTap: onTap,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.r)),
-                contentPadding: EdgeInsets.symmetric(horizontal: 6),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 6),
                 leading: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -147,18 +155,18 @@ class DonationCard extends HookConsumerWidget {
                     ),
                     RowSpacing(6.w),
                     Initicon(
-                      text: 'Enoch Aik',
+                      text: donor.name,
                       backgroundColor: RandomColorGenerator.generateRandomColor,
                     ),
                   ],
                 ),
                 title: KText(
-                  'Enoch Aik',
+                  donor.name,
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                 ),
                 subtitle: Text(
-                  '4,000Kr/10,000Kr',
+                  '4,000Kr/${donor.pledgedAmount.toFiatCurrencyFormat(decimalDigits: 0)}',
                   style: TextStyle(color: context.primary),
                 ),
                 trailing: CircularProgressIndicator(

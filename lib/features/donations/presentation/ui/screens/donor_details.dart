@@ -1,4 +1,5 @@
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:rccg_jp/features/donations/data/models/donor.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/modals/contact_donor.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/modals/record_donation.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/widgets/donor_info_tile.dart';
@@ -10,7 +11,12 @@ import 'package:rccg_jp/src/widgets/init_icon.dart';
 
 @RoutePage(name: 'donorDetails')
 class DonorDetailsScreen extends StatelessWidget {
-  const DonorDetailsScreen({super.key});
+  final Donor donor;
+
+  const DonorDetailsScreen({
+    super.key,
+    required this.donor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +28,7 @@ class DonorDetailsScreen extends StatelessWidget {
           width: double.maxFinite,
           child: FilledButton(
             onPressed: () {
-              RecordDonation.displayModal(context);
+              RecordDonation.displayModal(context, donor: donor);
             },
             child: const Text('Record donation'),
           ),
@@ -39,9 +45,9 @@ class DonorDetailsScreen extends StatelessWidget {
               onTap: () {
                 ContactModal.displayModal(
                   context,
-                  phoneNumber: '+46 76 123 4567',
-                  email: 'enochaik',
-                  name: 'Enoch Aik',
+                  phoneNumber: donor.phoneNumber,
+                  email: donor.email,
+                  name: donor.name,
                 );
               },
               child: Container(
@@ -91,17 +97,17 @@ class DonorDetailsScreen extends StatelessWidget {
               ),
               alignment: Alignment.bottomCenter,
               child: Initicon(
-                text: 'Enoch Aik',
+                text: donor.name,
                 size: 80,
                 backgroundColor: context.primary,
                 border: Border.all(width: 3, color: context.secondaryContainer),
               ),
             ),
             const ColSpacing(24),
-            const Align(
+            Align(
               alignment: Alignment.topCenter,
               child: KText(
-                'Enoch Aik',
+                donor.name,
                 fontWeight: FontWeight.w600,
                 fontSize: 24,
               ),
@@ -111,18 +117,18 @@ class DonorDetailsScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: [
-                  const DonorInfoTile(
+                  DonorInfoTile(
                     title: 'Phone',
-                    value: '+46 76 123 4567',
+                    value: donor.phoneNumber,
                     addUnderline: true,
                   ),
-                  const DonorInfoTile(
+                  DonorInfoTile(
                     title: 'Email',
-                    value: 'enochaik@gmail.com',
+                    value: donor.email,
                   ),
                   DonorInfoTile(
                     title: 'Last donation',
-                    value: DateTime.now().toDateAndTime(),
+                    value: donor.lastDonationAt.toDateAndTime(),
                   ),
                 ],
               ),
@@ -167,21 +173,23 @@ class DonorDetailsScreen extends StatelessWidget {
                         children: [
                           CircularProgressIndicatorWithText(
                             percentage: 10,
-                          ).animate(onComplete: (_) {
-                            _.repeat();
+                          ).animate(onComplete: (controller) {
+                            controller.repeat();
                           }).fade(duration: const Duration(seconds: 5)),
                           const RowSpacing(24),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const KText(
-                                '4,000Kr/10,000Kr',
+                              KText(
+                                '4,000Kr/${donor.pledgedAmount.toFiatCurrencyFormat(decimalDigits: 0)}',
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                               ),
                               KText(
-                                '10 months',
+                                donor.installmentMonth > 1
+                                    ? '${donor.installmentMonth} months'
+                                    : '${donor.installmentMonth} month',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 color: context.outline,

@@ -31,11 +31,14 @@ class DonationScreen extends HookConsumerWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           itemBuilder: (context, index) {
             return DonationCard(
+              donor: data[index],
               key: ValueKey(index),
               // expandedView: true,
               onTap: () {
                 AppNavigator.of(context).push(
-                  const DonorDetails(),
+                  DonorDetails(
+                    donor: data[index],
+                  ),
                 );
               },
             );

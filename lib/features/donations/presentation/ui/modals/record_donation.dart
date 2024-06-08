@@ -1,10 +1,19 @@
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:rccg_jp/features/donations/data/models/donation_amount.dart';
+import 'package:rccg_jp/features/donations/data/models/donor.dart';
+import 'package:rccg_jp/features/donations/providers.dart';
+import 'package:rccg_jp/features/onboarding/providers.dart';
 import 'package:rccg_jp/lib.dart';
 import 'package:rccg_jp/src/extensions/extensions.dart';
 import 'package:rccg_jp/src/widgets/textfield/date_textfield.dart';
+import 'package:uuid/uuid.dart';
 
 class RecordDonation extends HookConsumerWidget {
-  const RecordDonation({super.key});
+  final Donor donor;
+
+  const RecordDonation({super.key, required this.donor});
+
+  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -12,69 +21,129 @@ class RecordDonation extends HookConsumerWidget {
     final ValueNotifier<String> currency = useState('SEK');
     final List<String> supportedCurrencies = ['SEK', 'EUR', 'USD'];
     final donatedAt = useTextEditingController();
-    return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-      child: Column(
-        children: [
-          KText(
-            'Kindly fill in the following information below to record a donation for User',
-            fontSize: 16,
-            color: context.primary,
-          ).animate().shimmer(duration: const Duration(seconds: 3)),
-          const ColSpacing(32),
-          const CustomFormField(
-            label: 'Amount',
-            textField: DefaultTextFormField(
-              keyboardType: TextInputType.number,
-              hint: 'Enter amount donated here',
+    return Form(
+      key: _formKey,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        child: Column(
+          children: [
+            KText(
+              'Kindly fill in the following information below to record a donation for User',
+              fontSize: 16,
+              color: context.primary,
+            ).animate().shimmer(duration: const Duration(seconds: 3)),
+            const ColSpacing(32),
+            CustomFormField(
+              label: 'Amount',
+              textField: DefaultTextFormField(
+                controller: amount,
+                keyboardType: TextInputType.number,
+                hint: 'Enter amount donated here',
+                validator: (String? text) {
+                  if (text!.isEmpty) {
+                    return 'Pledged amount is required';
+                  }
+                  return null;
+                },
+              ),
             ),
-          ),
-          CustomFormField(
-            label: 'Currency',
-            textField: DropdownButtonFormField<String>(
-              value: 'SEK',
-              items: ['SEK', 'EUR', 'USD']
-                  .map(
-                    (String currency) => DropdownMenuItem(
-                      value: currency,
-                      child: Row(
-                        children: [
-                          Text(switch (currency) {
-                            'SEK' => 'Swedish Krona (SEK)',
-                            'EUR' => 'Euro (EUR)',
-                            'USD' => 'US Dollar (USD)',
-                            String() => '',
-                          }),
-                        ],
+            CustomFormField(
+              label: 'Currency',
+              textField: DropdownButtonFormField<String>(
+                value: currency.value,
+                validator: (value) {
+                  if (value == null) {
+                    return 'Currency is required';
+                  }
+                  return null;
+                },
+                items: supportedCurrencies
+                    .map(
+                      (String currency) => DropdownMenuItem(
+                        value: currency,
+                        child: Row(
+                          children: [
+                            Text(switch (currency) {
+                              'SEK' => 'Swedish Krona (SEK)',
+                              'EUR' => 'Euro (EUR)',
+                              'USD' => 'US Dollar (USD)',
+                              String() => '',
+                            }),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (String? value) {},
+                    )
+                    .toList(),
+                onChanged: (String? value) {},
+              ),
             ),
-          ),
-          CustomFormField(
-              label: 'Donated at',
-              textField: DateTextField(
-                date: donatedAt,
-                hintText: 'Enter donation date here',
-              )),
-          ColSpacing(32.h),
-          SizedBox(
-            width: double.maxFinite,
-            child: FilledButton(
-              onPressed: () {
-                AppNavigator.of(context).pop();
-              },
-              child: const Text('Record donation'),
+            CustomFormField(
+                label: 'Donated at',
+                textField: DateTextField(
+                  date: donatedAt,
+                  hintText: 'Enter donation date here',
+                )),
+            ColSpacing(32.h),
+            SizedBox(
+              width: double.maxFinite,
+              child: FilledButton(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    Loader.show(context);
+                    final donationRepo = ref.read(donationRepoProvider);
+                    final currentUser = ref.read(currentUserProvider);
+
+                    NewDonation donation = NewDonation(
+                      amount: amount.text.currencyToDouble,
+                      donatedAt: donatedAt.text.toDateTime(),
+                      donorName: donor.name,
+                      donorId: donor.id,
+                      donationId: const Uuid().v4(),
+                      currencyShortName: currency.value,
+                      insertedByName: currentUser?.displayName ?? 'unknown',
+                      insertedByEmail: currentUser?.email ?? 'unknown',
+                    );
+                    Donor updatedDonorInfo = donor.copyWith(
+                      lastDonationAt: DateTime.now(),
+                      updatedAt: DateTime.now(),
+                      donations: [
+                        ...donor.donations,
+                        donation,
+                      ],
+                    );
+                    final result = await donationRepo.addDonation(
+                        donation: donation, updatedDonorInfo: updatedDonorInfo);
+                    if (context.mounted) {
+                      Loader.hide(context);
+                    }
+                    result.when(
+                      success: (data) {
+                        context.router.popUntilRoot();
+                        Toast.success(
+                          'Donation recorded successfully',
+                          context,
+                        );
+                      },
+                      apiFailure: (e, _) {
+                        AppNavigator.of(context).pop();
+                        Toast.error(
+                          'An error occurred while trying to record this donation, try again',
+                          context,
+                        );
+                      },
+                    );
+                  }
+                },
+                child: const Text('Record donation'),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  static void displayModal(BuildContext context) {
+  static void displayModal(BuildContext context, {required Donor donor}) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -88,7 +157,12 @@ class RecordDonation extends HookConsumerWidget {
           topRight: Radius.circular(32.r),
         ),
       ),
-      builder: (context) => const RecordDonation(),
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: RecordDonation(donor: donor),
+      ),
     );
   }
 }

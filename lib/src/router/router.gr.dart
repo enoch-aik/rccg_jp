@@ -34,9 +34,13 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     DonorDetails.name: (routeData) {
+      final args = routeData.argsAs<DonorDetailsArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const DonorDetailsScreen(),
+        child: DonorDetailsScreen(
+          key: args.key,
+          donor: args.donor,
+        ),
       );
     },
     Home.name: (routeData) {
@@ -104,16 +108,40 @@ class Donation extends PageRouteInfo<void> {
 
 /// generated route for
 /// [DonorDetailsScreen]
-class DonorDetails extends PageRouteInfo<void> {
-  const DonorDetails({List<PageRouteInfo>? children})
-      : super(
+class DonorDetails extends PageRouteInfo<DonorDetailsArgs> {
+  DonorDetails({
+    Key? key,
+    required Donor donor,
+    List<PageRouteInfo>? children,
+  }) : super(
           DonorDetails.name,
+          args: DonorDetailsArgs(
+            key: key,
+            donor: donor,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'DonorDetails';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<DonorDetailsArgs> page =
+      PageInfo<DonorDetailsArgs>(name);
+}
+
+class DonorDetailsArgs {
+  const DonorDetailsArgs({
+    this.key,
+    required this.donor,
+  });
+
+  final Key? key;
+
+  final Donor donor;
+
+  @override
+  String toString() {
+    return 'DonorDetailsArgs{key: $key, donor: $donor}';
+  }
 }
 
 /// generated route for

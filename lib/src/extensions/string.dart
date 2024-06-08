@@ -31,7 +31,6 @@ extension CurrencyFormatter on String {
   //remove all . in the string
   String get removeDot => replaceAll('.', '');
 
-
   ///To get the extension of an image
 
   bool isSvg() {
@@ -46,5 +45,12 @@ extension CurrencyFormatter on String {
       return toLowerCase().endsWith('.png') || toLowerCase().endsWith('.jpg');
     }
     return false;
+  }
+
+  // convert from date string in dd/MM/yyyy format to DateTime
+  DateTime toDateTime() {
+    final parts = split('/');
+    return DateTime(
+        int.parse(parts[2]), int.parse(parts[1]), int.parse(parts[0]));
   }
 }

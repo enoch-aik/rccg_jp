@@ -26,11 +26,11 @@ class ConfirmNewDonor extends HookConsumerWidget {
         DonorInfoTile(title: 'Phone number', value: donor.phoneNumber),
         DonorInfoTile(
             title: 'Amount',
-            value: '${donor.currencyShortName}${donor.amount}'),
+            value: '${donor.currencyShortName}${donor.pledgedAmount.toFiatCurrencyFormat(decimalDigits: 0)}'),
         DonorInfoTile(
-            title: 'Installment', value: donor.installmentMonth.getName),
+            title: 'Installment', value: '${donor.installmentMonth} months'),
         DonorInfoTile(
-            title: 'Pledge date', value: donor.pledgedAt.toDateAndTime()),
+            title: 'Pledged at', value: donor.pledgedAt.toDateAndTime()),
         ColSpacing(32.h),
         SizedBox(
           width: double.maxFinite,

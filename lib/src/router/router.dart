@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:rccg_jp/features/auth/presentation/ui/screens/login.dart';
 import 'package:rccg_jp/features/dashboard/presentation/ui/screens/dashboard.dart';
+import 'package:rccg_jp/features/donations/data/models/donor.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/screens/add_donation.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/screens/donation.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/screens/donor_details.dart';

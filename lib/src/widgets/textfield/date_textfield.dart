@@ -24,7 +24,7 @@ class _DateTextFieldState extends State<DateTextField> {
       controller: widget.date,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Donation Date is required';
+          return 'Donation date is required';
         }
         return null;
       },

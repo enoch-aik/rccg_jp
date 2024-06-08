@@ -75,4 +75,11 @@ extension DateConverter on DateTime {
   bool isSameDay(DateTime other) {
     return year == other.year && month == other.month && day == other.day;
   }
+
+  // convert from date string in dd/MM/yyyy format to DateTime
+  static DateTime fromString(String date) {
+    final parts = date.split('/');
+    return DateTime(int.parse(parts[2]), int.parse(parts[1]), int.parse(parts[0]));
+  }
+
 }
