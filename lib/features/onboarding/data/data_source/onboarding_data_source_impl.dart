@@ -15,10 +15,22 @@ class OnboardingDataSourceImpl extends OnboardingDataSource {
   Future<UserCredential?> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
+    //check if user is authorized
+    final List<String> authorizedEmails = await firestore
+        .collection('config')
+        .doc('authorized_emails')
+        .get()
+        .then((value) => value.get('emails').cast<String>());
+    if (googleUser != null && !authorizedEmails.contains(googleUser.email)) {
+      //throw error to notify user that they are not authorized
+      throw FirebaseAuthException(
+          code: 'Authorization failed',
+          message:
+              'Sorry, you are not authorized to use this application. Contact the admin for access.');
+    }
     // get auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
-
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,

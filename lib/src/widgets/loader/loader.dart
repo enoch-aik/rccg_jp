@@ -1,5 +1,4 @@
 import 'package:rccg_jp/lib.dart';
-import 'package:rccg_jp/src/widgets/loading_dialog.dart';
 
 /// Modified version of https://github.com/spporan/FlutterOverlayLoader/blob/master/lib/flutter_overlay_loader.dart
 

@@ -1,5 +1,6 @@
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rccg_jp/core/service_exceptions/src/api_exceptions.dart';
 import 'package:rccg_jp/features/onboarding/presentation/ui/custom_clipper/curve_clipper.dart';
 import 'package:rccg_jp/features/onboarding/providers.dart';
 import 'package:rccg_jp/lib.dart';
@@ -73,11 +74,11 @@ class OnboardingScreen extends ConsumerWidget {
                             if (context.mounted) {
                               Loader.hide(context);
                             }
-                            result.when(
-                                success: (data) {
-                                  AppNavigator.of(context).replace(Home());
-
-                                }, apiFailure: (e, _) {});
+                            result.when(success: (data) {
+                              AppNavigator.of(context).replace(const Home());
+                            }, apiFailure: (e, _) {
+                              Toast.error(e.message, context);
+                            });
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

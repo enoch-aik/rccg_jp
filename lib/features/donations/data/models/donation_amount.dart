@@ -12,10 +12,21 @@ class Donation {
   Donation(
       {required this.amount,
       required this.donatedAt,
-      required this.donationId,required this.currencyShortName});
+      required this.donationId,
+      required this.currencyShortName});
 
   factory Donation.fromJson(Map<String, dynamic> json) =>
       _$DonationFromJson(json);
 
   Map<String, dynamic> toJson() => _$DonationToJson(this);
+
+/*Map<String, dynamic> toFirebaseJson() {
+    Uuid uuid = const Uuid();
+    return {
+      'donationId': uuid.v4(),
+      'amount': amount,
+      'donatedAt': donatedAt,
+      'currencyShortName': currencyShortName,
+    };
+  }*/
 }

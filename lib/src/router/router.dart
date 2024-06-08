@@ -5,6 +5,7 @@ import 'package:rccg_jp/features/dashboard/presentation/ui/screens/dashboard.dar
 import 'package:rccg_jp/features/donations/presentation/ui/screens/add_donation.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/screens/donation.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/screens/donor_details.dart';
+import 'package:rccg_jp/features/donations/presentation/ui/screens/record_donation.dart';
 import 'package:rccg_jp/features/home/presentation/ui/screens/home.dart';
 import 'package:rccg_jp/features/onboarding/presentation/ui/screens/onboarding.dart';
 
@@ -23,6 +24,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: Donation.page),
         AutoRoute(page: AddDonor.page),
         AutoRoute(page: DonorDetails.page),
+        //AutoRoute(page: RecordDonation.page),
       ];
 
   Route<T> modalSheetBuilder<T>(

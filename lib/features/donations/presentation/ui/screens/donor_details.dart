@@ -1,4 +1,6 @@
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:rccg_jp/features/donations/presentation/ui/modals/contact_donor.dart';
+import 'package:rccg_jp/features/donations/presentation/ui/modals/record_donation.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/widgets/donor_info_tile.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/widgets/payment_tile.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/widgets/status_card.dart';
@@ -19,7 +21,9 @@ class DonorDetailsScreen extends StatelessWidget {
         child: SizedBox(
           width: double.maxFinite,
           child: FilledButton(
-            onPressed: () {},
+            onPressed: () {
+              RecordDonation.displayModal(context);
+            },
             child: const Text('Record donation'),
           ),
         ),
@@ -31,28 +35,38 @@ class DonorDetailsScreen extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8),
-            child: Container(
-              /*width: 92.w,
-                    height: 32.h,*/
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.r),
-                  color: context.tertiary),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.call_outlined,
-                    color: context.onPrimary,
-                  ),
-                  RowSpacing(4),
-                  KText(
-                    'Contact',
-                    fontSize: 13.sp,
-                    color: context.onPrimary,
-                    fontWeight: FontWeight.w500,
-                  )
-                ],
+            child: GestureDetector(
+              onTap: () {
+                ContactModal.displayModal(
+                  context,
+                  phoneNumber: '+46 76 123 4567',
+                  email: 'enochaik',
+                  name: 'Enoch Aik',
+                );
+              },
+              child: Container(
+                /*width: 92.w,
+                      height: 32.h,*/
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.r),
+                    color: context.tertiary),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.call_outlined,
+                      color: context.onPrimary,
+                    ),
+                    const RowSpacing(4),
+                    KText(
+                      'Contact',
+                      fontSize: 13.sp,
+                      color: context.onPrimary,
+                      fontWeight: FontWeight.w500,
+                    )
+                  ],
+                ),
               ),
             ),
           )
@@ -83,7 +97,7 @@ class DonorDetailsScreen extends StatelessWidget {
                 border: Border.all(width: 3, color: context.secondaryContainer),
               ),
             ),
-            ColSpacing(24),
+            const ColSpacing(24),
             const Align(
               alignment: Alignment.topCenter,
               child: KText(
@@ -92,17 +106,17 @@ class DonorDetailsScreen extends StatelessWidget {
                 fontSize: 24,
               ),
             ),
-            ColSpacing(24),
+            const ColSpacing(24),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: [
-                  DonorInfoTile(
+                  const DonorInfoTile(
                     title: 'Phone',
                     value: '+46 76 123 4567',
                     addUnderline: true,
                   ),
-                  DonorInfoTile(
+                  const DonorInfoTile(
                     title: 'Email',
                     value: 'enochaik@gmail.com',
                   ),
@@ -113,13 +127,13 @@ class DonorDetailsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            ColSpacing(8),
-            Divider(
+            const ColSpacing(8),
+            const Divider(
               height: 0,
             ),
-            ColSpacing(16),
+            const ColSpacing(16),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Container(
                 decoration: BoxDecoration(
                   color: context.secondaryContainer,
@@ -174,7 +188,7 @@ class DonorDetailsScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Tooltip(
                             triggerMode: TooltipTriggerMode.tap,
                             message: switch (status) {
@@ -203,7 +217,7 @@ class DonorDetailsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            ColSpacing(24),
+            const ColSpacing(24),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
@@ -223,29 +237,38 @@ class DonorDetailsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  ColSpacing(16),
+                  const ColSpacing(16),
                   Container(
                     width: double.maxFinite,
                     //padding: EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         //color: Colors.white,
                         borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(32),
-                          topRight: Radius.circular(32),
-                        )),
-                   // padding: EdgeInsets.only(top: 8,left: 8,right:8),
-                    child: Column(
-                      children: [
-                        PaymentTile(),
-                        PaymentTile(),
-                        PaymentTile(),
-                        PaymentTile(),
-                      ],
-                    ),
+                      topLeft: Radius.circular(32),
+                      topRight: Radius.circular(32),
+                    )),
+                    // padding: EdgeInsets.only(top: 8,left: 8,right:8),
+                    child: ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return const PaymentTile();
+                        },
+                        separatorBuilder: (context, index) {
+                          return const ColSpacing(8);
+                        },
+                        itemCount: 4),
+                  ),
+                  const ColSpacing(8),
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: ElevatedButton(
+                        onPressed: () {}, child: const Text('View All')),
                   )
                 ],
               ),
             ),
+            const ColSpacing(64)
           ],
         ),
       ),
