@@ -57,6 +57,7 @@ dependencies:
   flutter_phone_direct_caller: ^2.1.1
   url_launcher: ^6.3.0
   uuid: ^4.4.0
+  syncfusion_flutter_charts: ^25.2.7
 
 dev_dependencies:
   flutter_test:
