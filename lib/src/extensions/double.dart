@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 extension PriceConverter on double {
   String get toEightDP => toStringAsFixed(8);
 
-  String get toTwoDP => toStringAsFixed(2);
+  double get toTwoDP => double.parse(toStringAsFixed(2));
 
   String get toEighteenDP => toStringAsFixed(18);
 

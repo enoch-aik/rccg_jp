@@ -19,6 +19,12 @@ class DonationRepoImpl extends DonationRepo {
       streamInterceptor(() => _dataSource.getDonors());
 
   @override
-  Future<ApiResult<bool>> addDonation({required NewDonation donation, required Donor updatedDonorInfo}) =>
-      apiInterceptor(() => _dataSource.addDonation(donation: donation, updatedDonorInfo: updatedDonorInfo));
+  Future<ApiResult<bool>> addDonation(
+          {required NewDonation donation, required Donor updatedDonorInfo}) =>
+      apiInterceptor(() => _dataSource.addDonation(
+          donation: donation, updatedDonorInfo: updatedDonorInfo));
+
+  @override
+  ApiResult<Stream<List<NewDonation>>> getAllDonations() =>
+      streamInterceptor(() => _dataSource.getAllDonations());
 }

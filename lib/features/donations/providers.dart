@@ -9,7 +9,7 @@ final donationRepoProvider = Provider((ref) {
   return DonationRepoImpl(ref.read(donationDataSourceProvider));
 });
 
-final allDonationsStreamProvider = StreamProvider((ref) {
+final allDonorsStreamProvider = StreamProvider((ref) {
   return ref
       .watch(donationRepoProvider)
       .getDonors()

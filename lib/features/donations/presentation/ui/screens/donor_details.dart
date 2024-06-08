@@ -6,7 +6,9 @@ import 'package:rccg_jp/features/donations/presentation/ui/widgets/donor_info_ti
 import 'package:rccg_jp/features/donations/presentation/ui/widgets/payment_tile.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/widgets/status_card.dart';
 import 'package:rccg_jp/lib.dart';
+import 'package:rccg_jp/src/extensions/donation.dart';
 import 'package:rccg_jp/src/extensions/extensions.dart';
+import 'package:rccg_jp/src/extensions/new_donation.dart';
 import 'package:rccg_jp/src/widgets/init_icon.dart';
 
 @RoutePage(name: 'donorDetails')
@@ -20,7 +22,6 @@ class DonorDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PaymentStatus status = PaymentStatus.inProgress;
     return Scaffold(
       bottomSheet: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -172,7 +173,7 @@ class DonorDetailsScreen extends StatelessWidget {
                       child: Row(
                         children: [
                           CircularProgressIndicatorWithText(
-                            percentage: 10,
+                            percentage: donor.getProgressValue(),
                           ).animate(onComplete: (controller) {
                             controller.repeat();
                           }).fade(duration: const Duration(seconds: 5)),
@@ -182,7 +183,7 @@ class DonorDetailsScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               KText(
-                                '4,000Kr/${donor.pledgedAmount.toFiatCurrencyFormat(decimalDigits: 0)}',
+                                '${donor.donations.totalAmount.toFiatCurrencyFormat(decimalDigits: 0)}/${donor.pledgedAmount.toFiatCurrencyFormat(decimalDigits: 0)}',
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -199,7 +200,7 @@ class DonorDetailsScreen extends StatelessWidget {
                           const Spacer(),
                           Tooltip(
                             triggerMode: TooltipTriggerMode.tap,
-                            message: switch (status) {
+                            message: switch (donor.getStatus()) {
                               PaymentStatus.notStarted => 'Not started',
                               PaymentStatus.inProgress => 'In progress',
                               PaymentStatus.completed => 'Completed',
@@ -208,7 +209,7 @@ class DonorDetailsScreen extends StatelessWidget {
                               height: double.maxFinite,
                               width: 8,
                               decoration: BoxDecoration(
-                                  color: switch (status) {
+                                  color: switch (donor.getStatus()) {
                                     PaymentStatus.notStarted => context.error,
                                     PaymentStatus.inProgress =>
                                       const Color(0xffEB833C),
@@ -234,15 +235,16 @@ class DonorDetailsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const KText('Recent Donations', fontSize: 15),
-                      InkWell(
-                        onTap: () {},
-                        child: KText(
-                          'View all',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: context.primary,
+                      if (donor.donations.length > 4)
+                        InkWell(
+                          onTap: () {},
+                          child: KText(
+                            'View all',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: context.primary,
+                          ),
                         ),
-                      ),
                     ],
                   ),
                   const ColSpacing(16),
@@ -260,19 +262,36 @@ class DonorDetailsScreen extends StatelessWidget {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return const PaymentTile();
+                          if (donor.donations.isEmpty) {
+                            return SizedBox(
+                              height: 200,
+                              child: Center(
+                                child: KText(
+                                  'No donation has been made yet',
+                                  fontSize: 16,
+                                  color: context.error,
+                                ),
+                              ),
+                            );
+                          }
+                          return PaymentTile(
+                            donation: donor.donations[index],
+                          );
                         },
                         separatorBuilder: (context, index) {
                           return const ColSpacing(8);
                         },
-                        itemCount: 4),
+                        itemCount: donor.donations.length > 4
+                            ? 4
+                            : donor.donations.length),
                   ),
                   const ColSpacing(8),
-                  SizedBox(
-                    width: double.maxFinite,
-                    child: ElevatedButton(
-                        onPressed: () {}, child: const Text('View All')),
-                  )
+                  if (donor.donations.length > 4)
+                    SizedBox(
+                      width: double.maxFinite,
+                      child: ElevatedButton(
+                          onPressed: () {}, child: const Text('View All')),
+                    )
                 ],
               ),
             ),
@@ -286,14 +305,14 @@ class DonorDetailsScreen extends StatelessWidget {
 
 class CircularProgressIndicatorWithText extends StatelessWidget {
   late String? text;
-  final int percentage;
+  final double percentage;
 
   CircularProgressIndicatorWithText(
       {super.key, this.text, required this.percentage});
 
   @override
   Widget build(BuildContext context) {
-    var value = percentage / 100.0;
+    var value = percentage;
     var size = 80.0;
 
     text ??= '$percentage%';
@@ -309,6 +328,7 @@ class CircularProgressIndicatorWithText extends StatelessWidget {
               strokeWidth: 6,
               value: value,
               strokeCap: StrokeCap.round,
+              backgroundColor: context.surface,
             ),
           ),
         ),
@@ -316,7 +336,7 @@ class CircularProgressIndicatorWithText extends StatelessWidget {
             child: KText(
           text!,
           fontWeight: FontWeight.bold,
-          fontSize: 20,
+          fontSize: 18,
           color: context.primary,
         )),
       ],

@@ -93,6 +93,7 @@ class Donor {
       donations: donations ?? this.donations,
     );
   }
+
 }
 
 enum InstallmentMonth { one, two, five, ten }
