@@ -1,68 +1,70 @@
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:rccg_jp/features/donations/data/models/donor.dart';
+import 'package:rccg_jp/features/donations/presentation/ui/widgets/donor_info_tile.dart';
+import 'package:rccg_jp/features/donations/providers.dart';
 import 'package:rccg_jp/lib.dart';
-import 'package:rccg_jp/src/extensions/context.dart';
+import 'package:rccg_jp/src/extensions/extensions.dart';
 
-class ConfirmNewDonor extends StatelessWidget {
+class ConfirmNewDonor extends HookConsumerWidget {
   final Donor donor;
 
   const ConfirmNewDonor({super.key, required this.donor});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       child: Column(children: [
-KText(
+        KText(
           'Please confirm the details below to add a new donor',
           fontSize: 16.sp,
           color: context.primary,
         ).animate().shimmer(duration: const Duration(seconds: 3)),
         ColSpacing(32.h),
-        KText(
-          'Full name: ${donor.name}',
-          fontSize: 16.sp,
-        ),
-        KText(
-          'Email: ${donor.email}',
-          fontSize: 16.sp,
-        ),
-        KText(
-          'Phone number: ${donor.phoneNumber}',
-          fontSize: 16.sp,
-        ),
-        KText(
-          'Amount: ${donor.amount}',
-          fontSize: 16.sp,
-        ),
-        KText(
-          'Installment month: ${donor.installmentMonth.name}',
-          fontSize: 16.sp,
-        ),
-        KText(
-          'Pledged at: ${donor.pledgedAt}',
-          fontSize: 16.sp,
-        ),
-        KText(
-          'Updated at: ${donor.updatedAt}',
-          fontSize: 16.sp,
-        ),
-        KText(
-          'Last donation at: ${donor.lastDonationAt}',
-          fontSize: 16.sp,
-        ),
+        DonorInfoTile(title: 'Full name', value: donor.name),
+        DonorInfoTile(title: 'Email', value: donor.email),
+        DonorInfoTile(title: 'Phone number', value: donor.phoneNumber),
+        DonorInfoTile(
+            title: 'Amount',
+            value: '${donor.currencyShortName}${donor.pledgedAmount.toFiatCurrencyFormat(decimalDigits: 0)}'),
+        DonorInfoTile(
+            title: 'Installment', value: '${donor.installmentMonth} months'),
+        DonorInfoTile(
+            title: 'Pledged at', value: donor.pledgedAt.toDateAndTime()),
         ColSpacing(32.h),
         SizedBox(
           width: double.maxFinite,
           child: FilledButton(
-            onPressed: () {
-              AppNavigator.of(context).pop();
+            onPressed: () async {
+              Loader.show(context);
+
+              final donationRepo = ref.read(donationRepoProvider);
+
+              final result = await donationRepo.addDonor(donor);
+              if (context.mounted) {
+                Loader.hide(context);
+              }
+              result.when(
+                success: (data) {
+                  context.router.popUntilRoot();
+                  Toast.success(
+                    'Donor added successfully',
+                    context,
+                  );
+                },
+                apiFailure: (e, _) {
+                  AppNavigator.of(context).pop();
+                  Toast.error(
+                    'An error occurred while trying to add this donor, try again',
+                    context,
+                  );
+                },
+              );
             },
             child: const Text('Continue'),
           ),
         ),
       ]),
-
     );
   }
 
@@ -75,7 +77,7 @@ KText(
       isScrollControlled: true,
       showDragHandle: true,
       constraints: BoxConstraints.tightFor(
-        height: 480.h,
+        height: 400.h,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(

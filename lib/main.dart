@@ -53,7 +53,9 @@ class MyApp extends ConsumerWidget {
               title: 'Flutter Demo',
               theme: AppTheme.light,
               darkTheme: AppTheme.dark,
-              themeMode: ref.watch(themeModeProvider),
+              themeMode: /*ThemeMode.light*/
+
+              ref.watch(themeModeProvider),
               routeInformationParser: router.defaultRouteParser(),
               routeInformationProvider: router.routeInfoProvider(),
               debugShowCheckedModeBanner: false,

@@ -1,13 +1,11 @@
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rccg_jp/core/service_exceptions/src/api_exceptions.dart';
 import 'package:rccg_jp/features/onboarding/presentation/ui/custom_clipper/curve_clipper.dart';
 import 'package:rccg_jp/features/onboarding/providers.dart';
 import 'package:rccg_jp/lib.dart';
 import 'package:rccg_jp/src/extensions/extensions.dart';
 import 'package:rccg_jp/src/res/assets/svg/svg.dart';
-import 'package:rccg_jp/src/widgets/loader/loader.dart';
-import 'package:rccg_jp/src/widgets/margin.dart';
-import 'package:rccg_jp/src/widgets/text.dart';
 
 @RoutePage(name: 'onboarding')
 class OnboardingScreen extends ConsumerWidget {
@@ -76,11 +74,11 @@ class OnboardingScreen extends ConsumerWidget {
                             if (context.mounted) {
                               Loader.hide(context);
                             }
-                            result.when(
-                                success: (data) {
-                                  AppNavigator.of(context).replace(Home());
-
-                                }, apiFailure: (e, _) {});
+                            result.when(success: (data) {
+                              AppNavigator.of(context).replace(const Home());
+                            }, apiFailure: (e, _) {
+                              Toast.error(e.message, context);
+                            });
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -88,7 +86,7 @@ class OnboardingScreen extends ConsumerWidget {
                             children: [
                               SvgPicture.asset(googleLogo),
                               const RowSpacing(8),
-                              KText('Sign in with Google', fontSize: 15.sp),
+                              const KText('Sign in with Google', fontSize: 15),
                             ],
                           )))
                 ],

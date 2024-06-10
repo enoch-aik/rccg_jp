@@ -3,18 +3,40 @@ import 'package:json_annotation/json_annotation.dart';
 part 'donation_amount.g.dart';
 
 @JsonSerializable()
-class Donation {
+class NewDonation {
+  final String donorId;
   final String donationId;
+  final String donorName;
   final double amount;
   final DateTime donatedAt;
+  final String currencyShortName;
+  final String insertedByName;
+  final String insertedByEmail;
+  final bool? isCompleteDonation;
 
-  Donation(
+  NewDonation(
       {required this.amount,
       required this.donatedAt,
-      required this.donationId});
+      required this.donorName,
+      required this.donorId,
+      required this.donationId,
+      required this.currencyShortName,
+      required this.insertedByName,
+      required this.insertedByEmail,
+      this.isCompleteDonation = false});
 
-  factory Donation.fromJson(Map<String, dynamic> json) =>
+  factory NewDonation.fromJson(Map<String, dynamic> json) =>
       _$DonationFromJson(json);
 
   Map<String, dynamic> toJson() => _$DonationToJson(this);
+
+/*Map<String, dynamic> toFirebaseJson() {
+    Uuid uuid = const Uuid();
+    return {
+      'donationId': uuid.v4(),
+      'amount': amount,
+      'donatedAt': donatedAt,
+      'currencyShortName': currencyShortName,
+    };
+  }*/
 }

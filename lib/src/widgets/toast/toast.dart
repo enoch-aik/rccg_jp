@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rccg_jp/core/service_exceptions/src/api_exceptions.dart';
 
 class Toast {
-  static const double _toastHeight = 70.0;
+  static const double _toastHeight = 80.0;
   static const Color _backgroundColor = Color.fromRGBO(247, 247, 247, 1);
 
   static void show(
@@ -145,7 +145,7 @@ class Toast {
               child: Material(
                 color: Colors.transparent,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w,),
                   child: Container(
                     // height: _toastHeight,
                     decoration: BoxDecoration(
