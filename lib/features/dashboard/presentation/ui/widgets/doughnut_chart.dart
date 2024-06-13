@@ -3,7 +3,9 @@ import 'package:rccg_jp/src/extensions/extensions.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DoughnutChart extends StatelessWidget {
-  const DoughnutChart({super.key});
+  final double percentage;
+
+  const DoughnutChart({super.key, required this.percentage});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class DoughnutChart extends StatelessWidget {
           ),
         ),
         CircularChartAnnotation(
-            widget: Text('60%\nComplete',
+            widget: Text('${percentage.toTwoDP}%\nComplete',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: context.primary, fontSize: 12)))
       ],
@@ -46,10 +48,7 @@ class DoughnutChart extends StatelessWidget {
           radius: '55%',
           dataSource: <ChartSampleData>[
             ChartSampleData(x: 'A', y: 62, pointColor: context.primary),
-            ChartSampleData(
-                x: 'B',
-                y: 38,
-                pointColor: context.onSecondary)
+            ChartSampleData(x: 'B', y: 38, pointColor: context.onSecondary)
           ],
           animationDuration: 1,
           xValueMapper: (ChartSampleData data, _) => data.x as String,

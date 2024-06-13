@@ -2,7 +2,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rccg_jp/core/helpers/random_color_generator.dart';
 import 'package:rccg_jp/features/donations/data/models/donor.dart';
 import 'package:rccg_jp/lib.dart';
-import 'package:rccg_jp/src/extensions/donation.dart';
+import 'package:rccg_jp/src/extensions/donor.dart';
 import 'package:rccg_jp/src/extensions/extensions.dart';
 import 'package:rccg_jp/src/extensions/new_donation.dart';
 import 'package:rccg_jp/src/res/assets/svg/svg.dart';
@@ -44,7 +44,7 @@ class DonationCard extends HookConsumerWidget {
                     const Spacer(),
                     CircularProgressIndicator(
                       value: 0.4,
-                      semanticsValue: '%50',
+                    //  semanticsValue: '%50',
                       backgroundColor: context.surfaceVariant,
                     ),
                   ],
@@ -169,7 +169,7 @@ class DonationCard extends HookConsumerWidget {
             ),
             trailing: CircularProgressIndicator(
               value: donor.getProgressValue(),
-              semanticsValue: '%50',
+              //semanticsValue: '%50',
               backgroundColor: context.surfaceVariant,
             ),
           );
