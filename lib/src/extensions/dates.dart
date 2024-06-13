@@ -82,4 +82,9 @@ extension DateConverter on DateTime {
     return DateTime(int.parse(parts[2]), int.parse(parts[1]), int.parse(parts[0]));
   }
 
+  //get month short form
+  String get monthShort {
+    return DateFormat.MMM().format(this);
+  }
+
 }

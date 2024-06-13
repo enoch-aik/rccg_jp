@@ -26,9 +26,9 @@ class NewDonation {
       this.isCompleteDonation = false});
 
   factory NewDonation.fromJson(Map<String, dynamic> json) =>
-      _$DonationFromJson(json);
+      _$NewDonationFromJson(json);
 
-  Map<String, dynamic> toJson() => _$DonationToJson(this);
+  Map<String, dynamic> toJson() => _$NewDonationToJson(this);
 
 /*Map<String, dynamic> toFirebaseJson() {
     Uuid uuid = const Uuid();
