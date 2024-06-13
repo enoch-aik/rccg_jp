@@ -2,8 +2,13 @@ import 'package:rccg_jp/features/donations/data/models/donation_amount.dart';
 
 extension NewDonationExtension on List<NewDonation> {
   // Returns the total amount of all donations
-  double get totalAmount =>
-      fold(0, (previousValue, element) => previousValue + element.amount);
+  double get totalAmount {
+    if (isNotEmpty) {
+      return fold(
+          0, (previousValue, element) => previousValue + element.amount);
+    }
+    return 0;
+  }
 
   //get the total amount of donations done in the current week
   double get totalAmountThisWeek {
@@ -60,4 +65,77 @@ extension NewDonationExtension on List<NewDonation> {
   //get the total amount of donations all time
   double get totalAmountAllTime =>
       fold(0, (previousValue, element) => previousValue + element.amount);
+
+  //get a List<List<Donation>> that is sorted according to the months of the donation
+  List<List<NewDonation>> get donationsByMonth {
+    final now = DateTime.now();
+    final startOfThisYear = DateTime(now.year, 1, 1);
+    final endOfThisYear = DateTime(now.year, 12, 31);
+    final donationsByMonth = <List<NewDonation>>[];
+    for (var i = 1; i <= 12; i++) {
+      final startOfMonth = DateTime(now.year, i, 1);
+      final endOfMonth = DateTime(now.year, i + 1, 0);
+      final donationsInMonth = where((donation) =>
+          donation.donatedAt.isAfter(startOfMonth) &&
+          donation.donatedAt.isBefore(endOfMonth));
+      donationsByMonth.add(donationsInMonth.toList());
+    }
+    return donationsByMonth;
+  }
+
+  //get a Map<DateTime,<List<Donation>> for the current and last 11 from from now that is sorted according to the months of the donation in descending order,(where the year is also changed for months in previous years) where the key is the DateTime for the month and months after the current month of the year not included, only previous months
+  Map<DateTime, List<NewDonation>>  donationsByMonthMap ({int months = 10}) {
+    final now = DateTime.now();
+    final startOfThisYear = DateTime(now.year, 1, 1);
+    final endOfThisYear = DateTime(now.year, 12, 31);
+    final donationsByMonthMap = <DateTime, List<NewDonation>>{};
+    for (var i = 0; i < months; i++) {
+      final startOfMonth = DateTime(now.year, now.month - i, 1);
+      final endOfMonth = DateTime(now.year, now.month - i + 1, 0);
+      final donationsInMonth = where((donation) =>
+          donation.donatedAt.isAfter(startOfMonth) &&
+          donation.donatedAt.isBefore(endOfMonth));
+      donationsByMonthMap[startOfMonth] = donationsInMonth.toList();
+    }
+    //return reversed map
+    return Map.fromEntries(donationsByMonthMap.entries.toList().reversed);
+  }
+
+  //remove month where there are no donations
+  List<List<NewDonation>> get donationsByMonthWithoutEmptyMonths {
+    return donationsByMonth.where((donations) => donations.isNotEmpty).toList();
+  }
+
+  //use a switch case to get the month name of List<NewDonation> based on the first item in the list
+  String getMonthName(List<NewDonation> donations) {
+    final month = donations.first.donatedAt.month;
+    switch (month) {
+      case 1:
+        return 'Jan';
+      case 2:
+        return 'Feb';
+      case 3:
+        return 'Mar';
+      case 4:
+        return 'Apr';
+      case 5:
+        return 'May';
+      case 6:
+        return 'Jun';
+      case 7:
+        return 'Jul';
+      case 8:
+        return 'Aug';
+      case 9:
+        return 'Sep';
+      case 10:
+        return 'Oct';
+      case 11:
+        return 'Nov';
+      case 12:
+        return 'Dec';
+      default:
+        return '';
+    }
+  }
 }

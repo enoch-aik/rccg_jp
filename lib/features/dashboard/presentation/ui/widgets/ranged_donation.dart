@@ -11,8 +11,8 @@ class RangedDonationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width / 2.5,
-      padding: const EdgeInsets.all(16),
+      width: 160,
+      padding: const EdgeInsets.all(8),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
