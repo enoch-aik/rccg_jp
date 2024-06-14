@@ -3,6 +3,7 @@ import 'package:rccg_jp/features/dashboard/presentation/ui/widgets/bar_chart.dar
 import 'package:rccg_jp/features/dashboard/presentation/ui/widgets/progress_bar.dart';
 import 'package:rccg_jp/features/dashboard/presentation/ui/widgets/ranged_donation.dart';
 import 'package:rccg_jp/features/dashboard/providers.dart';
+import 'package:rccg_jp/features/donations/presentation/ui/widgets/payment_tile.dart';
 import 'package:rccg_jp/features/onboarding/providers.dart';
 import 'package:rccg_jp/lib.dart';
 import 'package:rccg_jp/src/extensions/extensions.dart';
@@ -169,7 +170,7 @@ class DashboardScreen extends HookConsumerWidget {
                           groupedDonations: data.donationsByMonthMap(
                               months:
                                   chosenOption.value.contains('6') ? 6 : 12),
-                        )
+                        ),
                       ],
                     );
                   },
@@ -182,6 +183,35 @@ class DashboardScreen extends HookConsumerWidget {
 
               const ColSpacing(24),
 //CandlestickChartWidget()
+
+              donations.when(data: (data) {
+                return Column(
+                  children: [
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: KText('Recent donations',
+                          fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                    const ColSpacing(16),
+                    ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          return PaymentTile(
+                            donation: data[index],
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return const ColSpacing(8);
+                        }),
+                  ],
+                );
+              }, error: (e, _) {
+                return SizedBox();
+              }, loading: () {
+                return SizedBox();
+              })
             ],
           ),
         ),
