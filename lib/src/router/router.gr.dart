@@ -21,6 +21,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const AddDonorScreen(),
       );
     },
+    AddNewUser.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const AddNewUserScreen(),
+      );
+    },
     Dashboard.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -80,6 +86,20 @@ class AddDonor extends PageRouteInfo<void> {
         );
 
   static const String name = 'AddDonor';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [AddNewUserScreen]
+class AddNewUser extends PageRouteInfo<void> {
+  const AddNewUser({List<PageRouteInfo>? children})
+      : super(
+          AddNewUser.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'AddNewUser';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
