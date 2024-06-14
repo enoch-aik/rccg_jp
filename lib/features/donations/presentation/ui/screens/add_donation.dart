@@ -18,10 +18,10 @@ class AddDonorScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController fullName = useTextEditingController(text: 'Test Data 2');
-    final TextEditingController email = useTextEditingController(text: 'test@google.com');
-    final TextEditingController phoneNumber = useTextEditingController(text: '0700000000');
-    final TextEditingController pledgedAmount = useTextEditingController(text: '10000');
+    final TextEditingController fullName = useTextEditingController();
+    final TextEditingController email = useTextEditingController();
+    final TextEditingController phoneNumber = useTextEditingController();
+    final TextEditingController pledgedAmount = useTextEditingController();
     final ValueNotifier<int?> installmentMonth = useState(null);
     final ValueNotifier<String> currency = useState('SEK');
     final List<String> supportedCurrencies = ['SEK', 'EUR', 'USD'];
@@ -169,7 +169,7 @@ class AddDonorScreen extends HookConsumerWidget {
                   decoration: const InputDecoration(
                     contentPadding: EdgeInsets.only(left: 10,right: 8),
                   ),
-                  items: (List.generate(10, (index) => index + 1)
+                  items: (List.generate(12, (index) => index + 1)
                       .map((e) => DropdownMenuItem(
                           value: e,
                           child: Text(e > 1 ? '$e  months' : '$e  month')))

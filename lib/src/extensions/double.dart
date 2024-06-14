@@ -1,4 +1,5 @@
 import 'package:decimal/decimal.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 extension PriceConverter on double {
@@ -68,5 +69,29 @@ extension PriceConverter on double {
 
     // If there's no decimal point or the number is an integer, return 0
     return 2;
+  }
+
+  //give numbers short form, like 33000 to 33k
+  String get toShortForm {
+    if (this >= 1000000000) {
+      return '${(this / 1000000000).toStringAsFixed(1)}B';
+    } else if (this >= 1000000) {
+      return '${(this / 1000000).toStringAsFixed(1)}M';
+    } else if (this >= 1000) {
+      return '${(this / 1000).toStringAsFixed(1)}K';
+    } else {
+      return toString();
+    }
+  }
+
+  //return color depending on the range of the total amount of donation, for less than 50% it returns red, for less than 75% it returns yellow, for less than 100% it returns green
+  Color get donationColor {
+    if (this < 1500000) {
+      return const Color(0xffd26900);
+    } else if (this < 2250000) {
+      return const Color(0xff00296b);
+    } else {
+      return Colors.green;
+    }
   }
 }

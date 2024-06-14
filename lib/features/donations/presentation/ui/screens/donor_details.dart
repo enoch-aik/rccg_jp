@@ -6,7 +6,7 @@ import 'package:rccg_jp/features/donations/presentation/ui/widgets/donor_info_ti
 import 'package:rccg_jp/features/donations/presentation/ui/widgets/payment_tile.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/widgets/status_card.dart';
 import 'package:rccg_jp/lib.dart';
-import 'package:rccg_jp/src/extensions/donation.dart';
+import 'package:rccg_jp/src/extensions/donor.dart';
 import 'package:rccg_jp/src/extensions/extensions.dart';
 import 'package:rccg_jp/src/extensions/new_donation.dart';
 import 'package:rccg_jp/src/widgets/init_icon.dart';
@@ -334,9 +334,9 @@ class CircularProgressIndicatorWithText extends StatelessWidget {
         ),
         Center(
             child: KText(
-          text!,
+          '${percentage.multiply(100)}%',
           fontWeight: FontWeight.bold,
-          fontSize: 18,
+          fontSize: 17,
           color: context.primary,
         )),
       ],

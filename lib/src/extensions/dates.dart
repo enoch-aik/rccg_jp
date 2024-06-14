@@ -59,10 +59,19 @@ extension DateConverter on DateTime {
     final now = DateTime.now();
     final difference = now.difference(this);
 
-    if (difference.inSeconds < 60) {
+    /* if (difference.inSeconds < 60) {
       return "${difference.inSeconds} secs ago";
     } else if (difference.inMinutes < 60) {
       return "${difference.inMinutes} mins ago";
+    } else if (difference.inHours < 48) {
+      return "${difference.inHours} hrs ago";
+    } */
+    if (difference.inSeconds < 60) {
+      return "Today";
+    } else if (difference.inMinutes < 60) {
+      return "Today";
+    } else if (difference.inHours <= 24) {
+      return "Today";
     } else if (difference.inHours < 48) {
       return "${difference.inHours} hrs ago";
     } else {
@@ -79,7 +88,12 @@ extension DateConverter on DateTime {
   // convert from date string in dd/MM/yyyy format to DateTime
   static DateTime fromString(String date) {
     final parts = date.split('/');
-    return DateTime(int.parse(parts[2]), int.parse(parts[1]), int.parse(parts[0]));
+    return DateTime(
+        int.parse(parts[2]), int.parse(parts[1]), int.parse(parts[0]));
   }
 
+  //get month short form
+  String get monthShort {
+    return DateFormat.MMM().format(this);
+  }
 }

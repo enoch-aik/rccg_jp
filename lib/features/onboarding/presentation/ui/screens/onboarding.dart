@@ -8,11 +8,27 @@ import 'package:rccg_jp/src/extensions/extensions.dart';
 import 'package:rccg_jp/src/res/assets/svg/svg.dart';
 
 @RoutePage(name: 'onboarding')
-class OnboardingScreen extends ConsumerWidget {
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
+  @override
+  void initState() {
+    super.initState();
+    //if current user is already signed in, navigate to home screen
+    bool isSignedIn = ref.read(currentUserProvider) != null;
+    print(isSignedIn);
+    if (isSignedIn) {
+      AppNavigator.of(context).replace(const Home());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(

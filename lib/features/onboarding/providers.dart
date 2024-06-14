@@ -11,7 +11,7 @@ final firebaseAuthProvider = Provider<FirebaseAuth>((ref) => auth);
 
 final onboardingDataProvider = Provider<OnboardingDataSourceImpl>((ref) {
   return OnboardingDataSourceImpl(
-      firestore: ref.read(firestoreProvider), firebaseAuth: auth);
+      firestore: ref.read(firestoreProvider), firebaseAuth: auth, ref: ref);
 });
 
 final onboardingRepoProvider = Provider<OnboardingRepoImpl>((ref) {

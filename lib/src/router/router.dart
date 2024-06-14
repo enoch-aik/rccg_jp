@@ -9,6 +9,8 @@ import 'package:rccg_jp/features/donations/presentation/ui/screens/donor_details
 import 'package:rccg_jp/features/donations/presentation/ui/screens/record_donation.dart';
 import 'package:rccg_jp/features/home/presentation/ui/screens/home.dart';
 import 'package:rccg_jp/features/onboarding/presentation/ui/screens/onboarding.dart';
+import 'package:rccg_jp/features/settings/presentation/ui/screens/add_user.dart';
+import 'package:rccg_jp/features/settings/presentation/ui/screens/settings.dart';
 
 part 'router.gr.dart';
 
@@ -25,6 +27,8 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: Donation.page),
         AutoRoute(page: AddDonor.page),
         AutoRoute(page: DonorDetails.page),
+        AutoRoute(page: Settings.page),
+        AutoRoute(page: AddNewUser.page),
         //AutoRoute(page: RecordDonation.page),
       ];
 

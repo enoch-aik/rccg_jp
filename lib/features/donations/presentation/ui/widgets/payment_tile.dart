@@ -6,6 +6,7 @@ import 'package:rccg_jp/src/res/assets/svg/svg.dart';
 
 class PaymentTile extends StatelessWidget {
   final NewDonation donation;
+  final bool isDashboard= false;
 
   const PaymentTile({super.key, required this.donation});
 
@@ -36,8 +37,8 @@ class PaymentTile extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const KText(
-                'Donation',
+               KText(
+              isDashboard?  donation.donorName :'Donation',
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
               ),
