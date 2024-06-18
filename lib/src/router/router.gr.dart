@@ -21,10 +21,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const AddDonorScreen(),
       );
     },
-    AddNewUser.name: (routeData) {
+    AddNewUserModal.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const AddNewUserScreen(),
+        child: const AddNewUserModalScreen(),
+      );
+    },
+    ControlUser.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ControlUserScreen(),
       );
     },
     Dashboard.name: (routeData) {
@@ -91,15 +97,29 @@ class AddDonor extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [AddNewUserScreen]
-class AddNewUser extends PageRouteInfo<void> {
-  const AddNewUser({List<PageRouteInfo>? children})
+/// [AddNewUserModalScreen]
+class AddNewUserModal extends PageRouteInfo<void> {
+  const AddNewUserModal({List<PageRouteInfo>? children})
       : super(
-          AddNewUser.name,
+          AddNewUserModal.name,
           initialChildren: children,
         );
 
-  static const String name = 'AddNewUser';
+  static const String name = 'AddNewUserModal';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ControlUserScreen]
+class ControlUser extends PageRouteInfo<void> {
+  const ControlUser({List<PageRouteInfo>? children})
+      : super(
+          ControlUser.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ControlUser';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
