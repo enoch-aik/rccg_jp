@@ -79,7 +79,8 @@ class SettingsScreen extends HookConsumerWidget {
                             subtitle: 'Add or remove app users',
                             icon: adminControlIcon,
                             onTap: () {
-                              AppNavigator.of(context).push(const AddNewUser());
+                              AppNavigator.of(context)
+                                  .push(const ControlUser());
                               //  context.router.push(const UserManagement());
                             });
                       }
