@@ -73,6 +73,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const OnboardingScreen(),
       );
     },
+    Preferences.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const PreferencesScreen(),
+      );
+    },
     Settings.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -228,6 +234,20 @@ class Onboarding extends PageRouteInfo<void> {
         );
 
   static const String name = 'Onboarding';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [PreferencesScreen]
+class Preferences extends PageRouteInfo<void> {
+  const Preferences({List<PageRouteInfo>? children})
+      : super(
+          Preferences.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'Preferences';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

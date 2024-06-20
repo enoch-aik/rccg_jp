@@ -11,6 +11,7 @@ import 'package:rccg_jp/features/home/presentation/ui/screens/home.dart';
 import 'package:rccg_jp/features/onboarding/presentation/ui/screens/onboarding.dart';
 import 'package:rccg_jp/features/settings/presentation/ui/modal/add_new_user.dart';
 import 'package:rccg_jp/features/settings/presentation/ui/screens/control_user.dart';
+import 'package:rccg_jp/features/settings/presentation/ui/screens/preferences.dart';
 import 'package:rccg_jp/features/settings/presentation/ui/screens/settings.dart';
 
 part 'router.gr.dart';
@@ -31,6 +32,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: Settings.page),
         AutoRoute(page: ControlUser.page),
         AutoRoute(page: AddNewUserModal.page),
+        AutoRoute(page: Preferences.page),
         //AutoRoute(page: RecordDonation.page),
       ];
 

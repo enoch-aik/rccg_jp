@@ -94,8 +94,9 @@ class SettingsScreen extends HookConsumerWidget {
                     subtitle: 'Customize your app experience',
                     icon: preferencesIcon,
                     onTap: () {
-                      Toast.info('Coming soon', context,
-                          title: 'Feature not available yet');
+                      /*Toast.info('Coming soon', context,
+                          title: 'Feature not available yet');*/
+                      AppNavigator.of(context).push(const Preferences());
                     }),
                 ActionTile(
                   title: 'Logout',
