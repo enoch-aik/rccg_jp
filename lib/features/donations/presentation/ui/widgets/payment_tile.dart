@@ -1,17 +1,21 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rccg_jp/features/donations/data/models/donation_amount.dart';
+import 'package:rccg_jp/features/settings/providers.dart';
 import 'package:rccg_jp/lib.dart';
 import 'package:rccg_jp/src/extensions/extensions.dart';
+import 'package:rccg_jp/src/extensions/new_donation.dart';
 import 'package:rccg_jp/src/res/assets/svg/svg.dart';
 
-class PaymentTile extends StatelessWidget {
+class PaymentTile extends HookConsumerWidget {
   final NewDonation donation;
-  final bool isDashboard= false;
+  final bool isDashboard = false;
 
   const PaymentTile({super.key, required this.donation});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedCurrency = ref.watch(selectedCurrencyProvider);
+    final allCurrencies = ref.watch(allCurrenciesProvider);
     return Container(
       width: double.maxFinite,
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
@@ -37,8 +41,8 @@ class PaymentTile extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               KText(
-              isDashboard?  donation.donorName :'Donation',
+              KText(
+                isDashboard ? donation.donorName : 'Donation',
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
               ),
@@ -54,7 +58,7 @@ class PaymentTile extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-             /* IconButton(iconSize: 20,
+              /* IconButton(iconSize: 20,
                   padding: EdgeInsets.zero,
                   onPressed: (){}, icon: Icon(Icons.info_outline)),*/
               KText(
@@ -63,7 +67,7 @@ class PaymentTile extends StatelessWidget {
                 color: context.outline,
               ),
               KText(
-                '+${donation.amount.toFiatCurrencyFormat(decimalDigits: 0)}',
+                '+${donation.convertedDonationAmount(selectedCurrency: selectedCurrency, currencies: allCurrencies).toFiatCurrencyFormat(decimalDigits: 2)}',
                 fontWeight: FontWeight.w900,
                 color: const Color(0xff006E1C),
                 fontSize: 16,

@@ -1,21 +1,25 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:rccg_jp/features/settings/data/models/currency.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'storage_keys.dart';
 
 late SharedPreferences prefs;
 
 class Storage {
   Storage();
+
   //save and fetch themeMode
   void saveThemeMode(ThemeMode theme) => prefs.setInt(
-      kThemeModeKey,
-      theme == ThemeMode.light
-          ? 0
-          : theme == ThemeMode.dark
-              ? 1
-              : 2,);
+        kThemeModeKey,
+        theme == ThemeMode.light
+            ? 0
+            : theme == ThemeMode.dark
+                ? 1
+                : 2,
+      );
 
   ThemeMode fetchThemeMode() => prefs.containsKey(kThemeModeKey)
       ? (prefs.getInt(kThemeModeKey)! == 0
@@ -46,6 +50,17 @@ class Storage {
   int fetchSelectedAvatar() => prefs.containsKey(kSelectedAvatarKey)
       ? prefs.getInt(kSelectedAvatarKey)!
       : 0;
+
+  //save and fetch user default currency
+  void saveUserDefaultCurrency(Currency currency) =>
+      prefs.setString(kUserDefaultCurrencyKey, json.encode(currency.toJson()));
+
+  Currency? fetchUserDefaultCurrency() =>
+      prefs.containsKey(kUserDefaultCurrencyKey)
+          ? Currency.fromJson(
+              json.decode(prefs.getString(kUserDefaultCurrencyKey)!),
+            )
+          : null;
 
   void saveOnBoardingInfo() => prefs.setBool(kOnBoardingKey, true);
 

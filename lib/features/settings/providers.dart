@@ -37,9 +37,13 @@ final StreamProvider<List<Currency>> appCurrencyProvider =
   });
 });
 
+final StateProvider<List<Currency>> allCurrenciesProvider =
+    StateProvider((ref) {
+  return ref.watch(appCurrencyProvider).value ?? [];
+});
 final selectedCurrencyProvider = StateProvider<Currency>((ref) {
-  return Currency(
-      name: 'Swedish Krona', rate: 1, shortName: 'SEK', symbol: 'Kr');
+  return ref.read(storeProvider).fetchUserDefaultCurrency() ??
+      Currency(name: 'Swedish Krona', rate: 1, shortName: 'SEK', symbol: 'Kr');
 });
 
 final settingsDataSourceProvider = Provider((ref) {
