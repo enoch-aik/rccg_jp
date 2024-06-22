@@ -1,3 +1,4 @@
+import 'package:rccg_jp/core/dependency_injection/di_providers.dart';
 import 'package:rccg_jp/features/settings/data/models/currency.dart';
 import 'package:rccg_jp/features/settings/providers.dart';
 import 'package:rccg_jp/lib.dart';
@@ -23,12 +24,12 @@ class PreferencesScreen extends HookConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            const ColSpacing(40),
+            const ColSpacing(24),
             currencies.when(data: (data) {
               List<Currency> currencies = data;
 
               return CustomFormField(
-                label: 'Select currency',
+                label: 'Choose default currency',
                 textField: DropdownButtonFormField<Currency>(
                   value: selectedCurrency.value,
                   items: currencies
@@ -36,6 +37,7 @@ class PreferencesScreen extends HookConsumerWidget {
                           value: e, child: Text('${e.name} (${e.symbol})')))
                       .toList(),
                   onChanged: (Currency? value) {
+                    selectedCurrency.value = value!;
                     //  ref.read(settingsRepoProvider).setCurrency(value!.name);
                   },
                   decoration: const InputDecoration(
@@ -53,8 +55,19 @@ class PreferencesScreen extends HookConsumerWidget {
               SizedBox(
                 width: double.maxFinite,
                 child: FilledButton(
-                  onPressed: () {},
-                  child: const Text('Save preferences'),
+                  onPressed: () {
+                    ref
+                        .read(storeProvider)
+                        .saveUserDefaultCurrency(selectedCurrency.value);
+                    ref.read(selectedCurrencyProvider.notifier).state =
+                        selectedCurrency.value;
+
+                    AppNavigator.of(context).pop();
+                    Toast.success(
+                        'Preference updated successfully and your default currency is now ${selectedCurrency.value.name}',
+                        context);
+                  },
+                  child: const Text('Continue'),
                 ),
               )
           ],
