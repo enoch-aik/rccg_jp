@@ -1,10 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:rccg_jp/features/settings/data/models/currency.dart';
+import 'package:rccg_jp/src/extensions/double.dart';
 
 import 'donation_amount.dart';
 
 part 'donor.g.dart';
 
-@JsonSerializable(explicitToJson: true,includeIfNull: false)
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class Donor {
   Donor(
       {required this.id,
@@ -94,6 +96,14 @@ class Donor {
     );
   }
 
+  double convertedPledgedAmount(
+      {required Currency selectedCurrency,
+      required List<Currency> currencies}) {
+    final donationCurrency = currencies
+        .firstWhere((element) => element.shortName == currencyShortName);
+    return selectedCurrency.rate.divide(donationCurrency.rate).multiply(pledgedAmount);
+
+  }
 }
 
 enum InstallmentMonth { one, two, five, ten }

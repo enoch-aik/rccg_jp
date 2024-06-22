@@ -1,5 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:intl/intl.dart';
+import 'package:rccg_jp/features/settings/data/models/currency.dart';
 import 'package:rccg_jp/src/extensions/double.dart';
 
 extension CurrencyFormatter on String {
@@ -52,5 +53,9 @@ extension CurrencyFormatter on String {
     final parts = split('/');
     return DateTime(
         int.parse(parts[2]), int.parse(parts[1]), int.parse(parts[0]));
+  }
+
+  String getCurrencySymbol(Currency currency) {
+    return currency.symbol;
   }
 }

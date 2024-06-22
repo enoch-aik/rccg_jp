@@ -16,7 +16,7 @@ class DonationScreen extends HookConsumerWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          AppNavigator.of(context).push(AddDonor());
+          AppNavigator.of(context).push(const AddDonor());
         },
         tooltip: 'Add new donor',
         child: SvgPicture.asset(addDonationOutlined),
@@ -32,7 +32,7 @@ class DonationScreen extends HookConsumerWidget {
           itemBuilder: (context, index) {
             return DonationCard(
               donor: data[index],
-              key: ValueKey(index),
+              //key: ValueKey(index),
               // expandedView: true,
               onTap: () {
                 AppNavigator.of(context).push(

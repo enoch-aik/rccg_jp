@@ -9,7 +9,7 @@ extension NewDonationExtension on NewDonation {
       required List<Currency> currencies}) {
     final donationCurrency = currencies
         .firstWhere((element) => element.shortName == currencyShortName);
-    return donationCurrency.rate.divide(selectedCurrency.rate).multiply(amount);
+    return selectedCurrency.rate.divide(donationCurrency.rate).multiply(amount);
   }
 
   double convertedDonationAmountWithShortName(
@@ -18,7 +18,7 @@ extension NewDonationExtension on NewDonation {
       required String currencyShortName}) {
     final donationCurrency = currencies
         .firstWhere((element) => element.shortName == currencyShortName);
-    return donationCurrency.rate.divide(selectedCurrency.rate).multiply(amount);
+    return selectedCurrency.rate.divide(donationCurrency.rate).multiply(amount);
   }
 }
 
@@ -28,6 +28,20 @@ extension NewDonationListExtension on List<NewDonation> {
     if (isNotEmpty) {
       return fold(
           0, (previousValue, element) => previousValue + element.amount);
+    }
+    return 0;
+  }
+
+  double convertedTotalAmount(
+      {required Currency selectedCurrency,
+      required List<Currency> currencies}) {
+    if (isNotEmpty) {
+      return fold(
+          0,
+          (previousValue, element) =>
+              previousValue +
+              element.convertedDonationAmount(
+                  selectedCurrency: selectedCurrency, currencies: currencies));
     }
     return 0;
   }
@@ -43,6 +57,24 @@ extension NewDonationListExtension on List<NewDonation> {
         .fold(0, (previousValue, element) => previousValue + element.amount);
   }
 
+  double convertedTotalAmountThisWeek(
+      {required Currency selectedCurrency,
+      required List<Currency> currencies}) {
+    final now = DateTime.now();
+    final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    final endOfWeek = startOfWeek.add(const Duration(days: 7));
+    return where((donation) =>
+            donation.donatedAt.isAfter(startOfWeek) &&
+            donation.donatedAt.isBefore(endOfWeek))
+        .fold(
+            0,
+            (previousValue, element) =>
+                previousValue +
+                element.convertedDonationAmount(
+                    selectedCurrency: selectedCurrency,
+                    currencies: currencies));
+  }
+
   //get the total amount of donations in the current month
   double get totalAmountThisMonth {
     final now = DateTime.now();
@@ -52,6 +84,24 @@ extension NewDonationListExtension on List<NewDonation> {
             donation.donatedAt.isAfter(startOfMonth) &&
             donation.donatedAt.isBefore(endOfMonth))
         .fold(0, (previousValue, element) => previousValue + element.amount);
+  }
+
+  double convertedTotalAmountThisMonth(
+      {required Currency selectedCurrency,
+      required List<Currency> currencies}) {
+    final now = DateTime.now();
+    final startOfMonth = DateTime(now.year, now.month, 1);
+    final endOfMonth = DateTime(now.year, now.month + 1, 0);
+    return where((donation) =>
+            donation.donatedAt.isAfter(startOfMonth) &&
+            donation.donatedAt.isBefore(endOfMonth))
+        .fold(
+            0,
+            (previousValue, element) =>
+                previousValue +
+                element.convertedDonationAmount(
+                    selectedCurrency: selectedCurrency,
+                    currencies: currencies));
   }
 
   //get the total amount of donations in the last 7 days
@@ -64,6 +114,23 @@ extension NewDonationListExtension on List<NewDonation> {
         .fold(0, (previousValue, element) => previousValue + element.amount);
   }
 
+  double convertedTotalAmountLast7Days(
+      {required Currency selectedCurrency,
+      required List<Currency> currencies}) {
+    final now = DateTime.now();
+    final startOfLast7Days = now.subtract(const Duration(days: 7));
+    return where((donation) =>
+            donation.donatedAt.isAfter(startOfLast7Days) &&
+            donation.donatedAt.isBefore(now))
+        .fold(
+            0,
+            (previousValue, element) =>
+                previousValue +
+                element.convertedDonationAmount(
+                    selectedCurrency: selectedCurrency,
+                    currencies: currencies));
+  }
+
   //get the total amount of donations in the last 30 days
   double get totalAmountLast30Days {
     final now = DateTime.now();
@@ -72,6 +139,23 @@ extension NewDonationListExtension on List<NewDonation> {
             donation.donatedAt.isAfter(startOfLast30Days) &&
             donation.donatedAt.isBefore(now))
         .fold(0, (previousValue, element) => previousValue + element.amount);
+  }
+
+  double convertedTotalAmountLast30Days(
+      {required Currency selectedCurrency,
+      required List<Currency> currencies}) {
+    final now = DateTime.now();
+    final startOfLast30Days = now.subtract(const Duration(days: 30));
+    return where((donation) =>
+            donation.donatedAt.isAfter(startOfLast30Days) &&
+            donation.donatedAt.isBefore(now))
+        .fold(
+            0,
+            (previousValue, element) =>
+                previousValue +
+                element.convertedDonationAmount(
+                    selectedCurrency: selectedCurrency,
+                    currencies: currencies));
   }
 
   //get the total amount of donations in the last 90 days
@@ -84,9 +168,36 @@ extension NewDonationListExtension on List<NewDonation> {
         .fold(0, (previousValue, element) => previousValue + element.amount);
   }
 
+  double convertedTotalAmountLast90Days(
+      {required Currency selectedCurrency,
+      required List<Currency> currencies}) {
+    final now = DateTime.now();
+    final startOfLast90Days = now.subtract(const Duration(days: 90));
+    return where((donation) =>
+            donation.donatedAt.isAfter(startOfLast90Days) &&
+            donation.donatedAt.isBefore(now))
+        .fold(
+            0,
+            (previousValue, element) =>
+                previousValue +
+                element.convertedDonationAmount(
+                    selectedCurrency: selectedCurrency,
+                    currencies: currencies));
+  }
+
   //get the total amount of donations all time
   double get totalAmountAllTime =>
       fold(0, (previousValue, element) => previousValue + element.amount);
+
+  double convertedTotalAmountAllTime(
+          {required Currency selectedCurrency,
+          required List<Currency> currencies}) =>
+      fold(
+          0,
+          (previousValue, element) =>
+              previousValue +
+              element.convertedDonationAmount(
+                  selectedCurrency: selectedCurrency, currencies: currencies));
 
   //get a List<List<Donation>> that is sorted according to the months of the donation
   List<List<NewDonation>> get donationsByMonth {

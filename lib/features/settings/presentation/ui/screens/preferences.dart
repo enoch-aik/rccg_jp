@@ -27,7 +27,6 @@ class PreferencesScreen extends HookConsumerWidget {
             const ColSpacing(24),
             currencies.when(data: (data) {
               List<Currency> currencies = data;
-
               return CustomFormField(
                 label: 'Choose default currency',
                 textField: DropdownButtonFormField<Currency>(

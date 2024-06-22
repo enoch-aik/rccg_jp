@@ -26,6 +26,7 @@ class DonationCard extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedCurrency = ref.watch(selectedCurrencyProvider);
     final allCurrencies = ref.watch(allCurrenciesProvider);
+    bool isSEK = selectedCurrency.shortName == 'SEK';
     return expandedView!
         ? Container(
             decoration: BoxDecoration(
@@ -47,7 +48,7 @@ class DonationCard extends HookConsumerWidget {
                     const Spacer(),
                     CircularProgressIndicator(
                       value: 0.4,
-                    //  semanticsValue: '%50',
+                      //  semanticsValue: '%50',
                       backgroundColor: context.surfaceVariant,
                     ),
                   ],
@@ -166,9 +167,20 @@ class DonationCard extends HookConsumerWidget {
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
             ),
-            subtitle: Text(
-              '${donor.donations.totalAmount.toFiatCurrencyFormat(decimalDigits: 0)}/${ donor.pledgedAmount.toFiatCurrencyFormat(decimalDigits: 0)}',
-              style: TextStyle(color: context.primary),
+            subtitle: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                      text: isSEK
+                          ? '${donor.donations.convertedTotalAmount(selectedCurrency: selectedCurrency, currencies: allCurrencies).toFiatCurrencyFormat()} ${selectedCurrency.symbol}'
+                          : '${selectedCurrency.symbol} ${donor.donations.convertedTotalAmount(selectedCurrency: selectedCurrency, currencies: allCurrencies).toFiatCurrencyFormat()}'),
+                  const TextSpan(text: ' / '),
+                  TextSpan(
+                      text: isSEK
+                          ? '${donor.convertedPledgedAmount(selectedCurrency: selectedCurrency, currencies: allCurrencies).toFiatCurrencyFormat()} ${selectedCurrency.symbol}'
+                          : '${selectedCurrency.symbol} ${donor.convertedPledgedAmount(selectedCurrency: selectedCurrency, currencies: allCurrencies).toFiatCurrencyFormat()}'),
+                ],
+              ),
             ),
             trailing: CircularProgressIndicator(
               value: donor.getProgressValue(),

@@ -5,6 +5,7 @@ import 'package:rccg_jp/lib.dart';
 import 'package:rccg_jp/src/extensions/extensions.dart';
 import 'package:rccg_jp/src/extensions/new_donation.dart';
 import 'package:rccg_jp/src/res/assets/svg/svg.dart';
+import 'package:rccg_jp/src/widgets/currency_text.dart';
 
 class PaymentTile extends HookConsumerWidget {
   final NewDonation donation;
@@ -16,6 +17,7 @@ class PaymentTile extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedCurrency = ref.watch(selectedCurrencyProvider);
     final allCurrencies = ref.watch(allCurrenciesProvider);
+    bool isSEK = selectedCurrency.shortName == 'SEK';
     return Container(
       width: double.maxFinite,
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
@@ -66,8 +68,10 @@ class PaymentTile extends HookConsumerWidget {
                 fontSize: 14,
                 color: context.outline,
               ),
-              KText(
-                '+${donation.convertedDonationAmount(selectedCurrency: selectedCurrency, currencies: allCurrencies).toFiatCurrencyFormat(decimalDigits: 2)}',
+              KCurrencyText(
+                donation.convertedDonationAmount(selectedCurrency: selectedCurrency, currencies: allCurrencies).toFiatCurrencyFormat(decimalDigits: 2),
+                currency: selectedCurrency,
+                addPlusSign: true,
                 fontWeight: FontWeight.w900,
                 color: const Color(0xff006E1C),
                 fontSize: 16,

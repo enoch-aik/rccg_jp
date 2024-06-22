@@ -1,7 +1,9 @@
+import 'package:rccg_jp/features/settings/providers.dart';
 import 'package:rccg_jp/lib.dart';
 import 'package:rccg_jp/src/extensions/context.dart';
+import 'package:rccg_jp/src/widgets/currency_text.dart';
 
-class RangedDonationWidget extends StatelessWidget {
+class RangedDonationWidget extends HookConsumerWidget {
   final String title;
   final String amount;
 
@@ -9,7 +11,7 @@ class RangedDonationWidget extends StatelessWidget {
       {super.key, required this.title, required this.amount});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       width: 160,
       padding: const EdgeInsets.all(8),
@@ -29,8 +31,9 @@ class RangedDonationWidget extends StatelessWidget {
         children: [
           KText(title, fontSize: 16),
           const ColSpacing(8),
-          KText(
-            '$amount Kr',
+          KCurrencyText(
+            amount,
+            currency: ref.watch(selectedCurrencyProvider),
             fontSize: 17,
             fontWeight: FontWeight.w600,
             color: context.primary,

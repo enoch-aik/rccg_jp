@@ -1,6 +1,7 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:rccg_jp/features/settings/data/models/currency.dart';
 
 extension PriceConverter on double {
   String get toEightDP => toStringAsFixed(8);

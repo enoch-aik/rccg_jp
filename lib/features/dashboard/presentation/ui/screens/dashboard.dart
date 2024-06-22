@@ -5,9 +5,12 @@ import 'package:rccg_jp/features/dashboard/presentation/ui/widgets/ranged_donati
 import 'package:rccg_jp/features/dashboard/providers.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/widgets/payment_tile.dart';
 import 'package:rccg_jp/features/onboarding/providers.dart';
+import 'package:rccg_jp/features/settings/providers.dart';
 import 'package:rccg_jp/lib.dart';
+import 'package:rccg_jp/src/constants/app_constants.dart';
 import 'package:rccg_jp/src/extensions/extensions.dart';
 import 'package:rccg_jp/src/extensions/new_donation.dart';
+import 'package:rccg_jp/src/widgets/currency_text.dart';
 
 @RoutePage(name: 'dashboard')
 class DashboardScreen extends HookConsumerWidget {
@@ -19,6 +22,9 @@ class DashboardScreen extends HookConsumerWidget {
     final donations = ref.watch(allDonationsStreamProvider);
     final List<String> chartOptions = ['Last 6 months', 'Last 12 months'];
     final chosenOption = useState('Last 6 months');
+
+    final selectedCurrency = ref.watch(selectedCurrencyProvider);
+    final allCurrencies = ref.watch(allCurrenciesProvider);
     return Scaffold(
       extendBodyBehindAppBar: true,
       /*appBar: AppBar(
@@ -91,14 +97,15 @@ class DashboardScreen extends HookConsumerWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      KText(
-                                        '${data.totalAmountAllTime.toFiatCurrencyFormat(decimalDigits: 0)} kr',
+                                      KCurrencyText(
+                                        data.totalAmountAllTime.toFiatCurrencyFormat(),
+                                        currency: selectedCurrency,
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
                                         color: data
                                             .totalAmountAllTime.donationColor,
                                       ),
-                                      Container(
+                                      SizedBox(
                                         width: 200,
                                         child: Divider(
                                           //thickness: 5,
@@ -106,8 +113,11 @@ class DashboardScreen extends HookConsumerWidget {
                                           thickness: 2,
                                         ),
                                       ),
-                                      KText(
-                                        '3,000,000 kr',
+                                      KCurrencyText(
+                                        donationGoal
+                                            .multiply(selectedCurrency.rate)
+                                            .toFiatCurrencyFormat(),
+                                        currency: selectedCurrency,
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -138,20 +148,32 @@ class DashboardScreen extends HookConsumerWidget {
                           children: [
                             RangedDonationWidget(
                                 title: 'This week',
-                                amount: data.totalAmountThisWeek
-                                    .toFiatCurrencyFormat(decimalDigits: 0)),
+                                amount: data
+                                    .convertedTotalAmountThisWeek(
+                                        selectedCurrency: selectedCurrency,
+                                        currencies: allCurrencies)
+                                    .toFiatCurrencyFormat()),
                             RangedDonationWidget(
                                 title: 'This month',
-                                amount: data.totalAmountThisMonth
-                                    .toFiatCurrencyFormat(decimalDigits: 0)),
+                                amount: data
+                                    .convertedTotalAmountThisMonth(
+                                        selectedCurrency: selectedCurrency,
+                                        currencies: allCurrencies)
+                                    .toFiatCurrencyFormat()),
                             RangedDonationWidget(
                                 title: 'Past 3 months',
-                                amount: data.totalAmountLast90Days
-                                    .toFiatCurrencyFormat(decimalDigits: 0)),
+                                amount: data
+                                    .convertedTotalAmountLast90Days(
+                                        selectedCurrency: selectedCurrency,
+                                        currencies: allCurrencies)
+                                    .toFiatCurrencyFormat()),
                             RangedDonationWidget(
                                 title: 'All time',
-                                amount: data.totalAmountAllTime
-                                    .toFiatCurrencyFormat(decimalDigits: 0))
+                                amount: data
+                                    .convertedTotalAmountAllTime(
+                                        selectedCurrency: selectedCurrency,
+                                        currencies: allCurrencies)
+                                    .toFiatCurrencyFormat())
                           ],
                         ),
                         Align(

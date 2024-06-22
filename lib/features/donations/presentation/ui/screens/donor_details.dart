@@ -5,6 +5,7 @@ import 'package:rccg_jp/features/donations/presentation/ui/modals/record_donatio
 import 'package:rccg_jp/features/donations/presentation/ui/widgets/donor_info_tile.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/widgets/payment_tile.dart';
 import 'package:rccg_jp/features/donations/presentation/ui/widgets/status_card.dart';
+import 'package:rccg_jp/features/settings/providers.dart';
 import 'package:rccg_jp/lib.dart';
 import 'package:rccg_jp/src/extensions/donor.dart';
 import 'package:rccg_jp/src/extensions/extensions.dart';
@@ -12,7 +13,7 @@ import 'package:rccg_jp/src/extensions/new_donation.dart';
 import 'package:rccg_jp/src/widgets/init_icon.dart';
 
 @RoutePage(name: 'donorDetails')
-class DonorDetailsScreen extends StatelessWidget {
+class DonorDetailsScreen extends HookConsumerWidget {
   final Donor donor;
 
   const DonorDetailsScreen({
@@ -21,7 +22,10 @@ class DonorDetailsScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+    final selectedCurrency = ref.watch(selectedCurrencyProvider);
+    final allCurrencies = ref.watch(allCurrenciesProvider);
+    bool isSEK = selectedCurrency.shortName == 'SEK';
     return Scaffold(
       bottomSheet: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -182,11 +186,30 @@ class DonorDetailsScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              KText(
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text: isSEK
+                                            ? '${donor.donations.convertedTotalAmount(selectedCurrency: selectedCurrency, currencies: allCurrencies).toFiatCurrencyFormat()} ${selectedCurrency.symbol}'
+                                            : '${selectedCurrency.symbol} ${donor.donations.convertedTotalAmount(selectedCurrency: selectedCurrency, currencies: allCurrencies).toFiatCurrencyFormat()}'),
+                                    const TextSpan(text: ' / '),
+                                    TextSpan(
+                                        text: isSEK
+                                            ? '${donor.convertedPledgedAmount(selectedCurrency: selectedCurrency, currencies: allCurrencies).toFiatCurrencyFormat()} ${selectedCurrency.symbol}'
+                                            : '${selectedCurrency.symbol} ${donor.convertedPledgedAmount(selectedCurrency: selectedCurrency, currencies: allCurrencies).toFiatCurrencyFormat()}'),
+                                  ],
+                                ),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              /*KText(
                                 '${donor.donations.totalAmount.toFiatCurrencyFormat(decimalDigits: 0)}/${donor.pledgedAmount.toFiatCurrencyFormat(decimalDigits: 0)}',
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
-                              ),
+                              ),*/
                               KText(
                                 donor.installmentMonth > 1
                                     ? '${donor.installmentMonth} months'
