@@ -1,6 +1,28 @@
 import 'package:rccg_jp/features/donations/data/models/donation_amount.dart';
+import 'package:rccg_jp/features/settings/data/models/currency.dart';
+import 'package:rccg_jp/src/extensions/double.dart';
 
-extension NewDonationExtension on List<NewDonation> {
+extension NewDonationExtension on NewDonation {
+  //currency is the selectedCurrency according to the user's settings, this is stored in the provider
+  double convertedDonationAmount(
+      {required Currency selectedCurrency,
+      required List<Currency> currencies}) {
+    final donationCurrency = currencies
+        .firstWhere((element) => element.shortName == currencyShortName);
+    return donationCurrency.rate.divide(selectedCurrency.rate).multiply(amount);
+  }
+
+  double convertedDonationAmountWithShortName(
+      {required Currency selectedCurrency,
+      required List<Currency> currencies,
+      required String currencyShortName}) {
+    final donationCurrency = currencies
+        .firstWhere((element) => element.shortName == currencyShortName);
+    return donationCurrency.rate.divide(selectedCurrency.rate).multiply(amount);
+  }
+}
+
+extension NewDonationListExtension on List<NewDonation> {
   // Returns the total amount of all donations
   double get totalAmount {
     if (isNotEmpty) {
@@ -84,7 +106,7 @@ extension NewDonationExtension on List<NewDonation> {
   }
 
   //get a Map<DateTime,<List<Donation>> for the current and last 11 from from now that is sorted according to the months of the donation in descending order,(where the year is also changed for months in previous years) where the key is the DateTime for the month and months after the current month of the year not included, only previous months
-  Map<DateTime, List<NewDonation>>  donationsByMonthMap ({int months = 10}) {
+  Map<DateTime, List<NewDonation>> donationsByMonthMap({int months = 10}) {
     final now = DateTime.now();
     final startOfThisYear = DateTime(now.year, 1, 1);
     final endOfThisYear = DateTime(now.year, 12, 31);

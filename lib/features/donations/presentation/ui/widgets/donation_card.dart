@@ -1,6 +1,7 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:rccg_jp/core/helpers/random_color_generator.dart';
 import 'package:rccg_jp/features/donations/data/models/donor.dart';
+import 'package:rccg_jp/features/settings/providers.dart';
 import 'package:rccg_jp/lib.dart';
 import 'package:rccg_jp/src/extensions/donor.dart';
 import 'package:rccg_jp/src/extensions/extensions.dart';
@@ -23,6 +24,8 @@ class DonationCard extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectedCurrency = ref.watch(selectedCurrencyProvider);
+    final allCurrencies = ref.watch(allCurrenciesProvider);
     return expandedView!
         ? Container(
             decoration: BoxDecoration(
@@ -164,7 +167,7 @@ class DonationCard extends HookConsumerWidget {
               fontWeight: FontWeight.w600,
             ),
             subtitle: Text(
-              '${donor.donations.totalAmount.toFiatCurrencyFormat(decimalDigits: 0)}/${donor.pledgedAmount.toFiatCurrencyFormat(decimalDigits: 0)}',
+              '${donor.donations.totalAmount.toFiatCurrencyFormat(decimalDigits: 0)}/${ donor.pledgedAmount.toFiatCurrencyFormat(decimalDigits: 0)}',
               style: TextStyle(color: context.primary),
             ),
             trailing: CircularProgressIndicator(

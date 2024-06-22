@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:rccg_jp/features/settings/data/models/currency.dart';
+import 'package:rccg_jp/src/extensions/extensions.dart';
 
 part 'donation_amount.g.dart';
 
